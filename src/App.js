@@ -4,40 +4,16 @@ class RacerTable extends Component {
     constructor(props) {
         super(props);
 
-        const sailors = [{
-            id: 1,
-            sailorName: 'Sailor One',
-            boatNumber: '142'
-        }, {
-            id: 2,
-            sailorName: 'Sailor Two',
-            boatNumber: '56'
-        }];
-
         this.state = {
-            sailors: sailors
+            sailors: props.sailors
         };
-    }
-
-    onChangeHandler(sailor, name, value) {
-        let currentSailors = this.state.sailors;
-
-        currentSailors.forEach(sailorRow => {
-            if (sailor.id === sailorRow.id) {
-                sailorRow[name] = value;
-            }
-        });
-
-        this.setState({
-            sailors: currentSailors
-        });
     }
 
     render() {
         let trs = [];
 
         this.state.sailors.forEach(sailer => {
-            trs.push(<RacerRow key={sailer.id} sailor={sailer} onChangeHandler={this.onChangeHandler.bind(this)} />);
+            trs.push(<RacerRow key={sailer.id} sailor={sailer} onChangeHandler={this.props.onChangeHandler} />);
         });
 
         return (
@@ -80,10 +56,44 @@ class RacerRow extends Component {
 }
 
 class App extends Component {
+    constructor(props) {
+        super(props);
+
+        const sailors = [{
+            id: 1,
+            sailorName: 'Sailor One',
+            boatNumber: '142'
+        }, {
+            id: 2,
+            sailorName: 'Sailor Two',
+            boatNumber: '56'
+        }];
+
+        this.state = {
+            sailors: sailors
+        };
+    }
+
+    onChangeHandler(sailor, name, value) {
+        // console.log(sailor);
+
+        let currentSailors = this.state.sailors;
+
+        currentSailors.forEach(sailorRow => {
+            if (sailor.id === sailorRow.id) {
+                sailorRow[name] = value;
+            }
+        });
+
+        this.setState({
+            sailors: currentSailors
+        });
+    }
+
     render() {
         return (
             <div className="app">
-                <RacerTable />
+                <RacerTable onChangeHandler={this.onChangeHandler.bind(this)} sailors={this.state.sailors} />
             </div>
         );
     }
