@@ -11,10 +11,8 @@ class AddRacer extends Component {
 
 class RacerTable extends Component {
     render() {
-        let racerRows = [];
-
-        this.props.sailors.forEach(sailer => {
-            racerRows.push(<RacerRow key={sailer.id} sailor={sailer} onChangeHandler={this.props.onChangeHandler} />);
+        const racerRows = this.props.sailors.map(sailer => {
+            return <RacerRow key={sailer.id} sailor={sailer} onChangeHandler={this.props.onChangeHandler} />;
         });
 
         return (
@@ -76,18 +74,16 @@ class App extends Component {
     }
 
     onChangeHandler(sailor, name, value) {
-        // console.log(sailor);
-
-        let currentSailors = this.state.sailors;
-
-        currentSailors.forEach(sailorRow => {
+        const updatedSailors = this.state.sailors.map(sailorRow => {
             if (sailor.id === sailorRow.id) {
                 sailorRow[name] = value;
             }
+
+            return sailorRow;
         });
 
         this.setState({
-            sailors: currentSailors
+            sailors: updatedSailors
         });
     }
 
