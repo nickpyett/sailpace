@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 
+class AddRacer extends Component {
+    render() {
+        return (
+            <button onClick={this.props.onAddRacer}>Add Sailor</button>
+        )
     }
+}
 
 class RacerTable extends Component {
     render() {
@@ -84,9 +90,32 @@ class App extends Component {
         });
     }
 
+    onAddRacer() {
+        const sailors = this.state.sailors;
+        let id = 1;
+
+        sailors.forEach(sailorRow => {
+            if (sailorRow.id > id) {
+                id = sailorRow.id + 1;
+            }
+        });
+
+        sailors.push({
+            id: id,
+            sailorName: '',
+            boatNumber: ''
+        });
+
+        this.setState({
+            sailors: sailors
+        });
+    }
+
     render() {
         return (
             <div className="app">
+                <AddRacer onAddRacer={this.onAddRacer.bind(this)} />
+
                 <RacerTable onChangeHandler={this.onChangeHandler.bind(this)} sailors={this.state.sailors} />
             </div>
         );
