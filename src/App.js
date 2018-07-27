@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import UUID from 'uuid';
 
 class AddRacer extends Component {
     render() {
@@ -60,11 +61,11 @@ class App extends Component {
         super(props);
 
         const sailors = [{
-            id: 1,
+            id: UUID.v4(),
             sailorName: 'Sailor One',
             boatNumber: '142'
         }, {
-            id: 2,
+            id: UUID.v4(),
             sailorName: 'Sailor Two',
             boatNumber: '56'
         }];
@@ -92,16 +93,9 @@ class App extends Component {
 
     onAddRacer() {
         const sailors = this.state.sailors;
-        let id = 1;
-
-        sailors.forEach(sailorRow => {
-            if (sailorRow.id > id) {
-                id = sailorRow.id + 1;
-            }
-        });
 
         sailors.push({
-            id: id,
+            id: UUID.v4(),
             sailorName: '',
             boatNumber: ''
         });
