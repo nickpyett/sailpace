@@ -9,6 +9,18 @@ class AddRacer extends Component {
     }
 }
 
+class RaceTitle extends Component {
+    onTitleChangeHandler(e) {
+        this.props.onTitleChangeHandler(e.target.value);
+    }
+
+    render() {
+        return (
+            <input onChange={this.onTitleChangeHandler.bind(this)} value={this.props.title} />
+        )
+    }
+}
+
 class RacerTable extends Component {
     render() {
         const racerRows = this.props.sailors.map(sailer => {
@@ -60,8 +72,14 @@ class App extends Component {
             boatNumber: '56'
         }];
 
+        const race = {
+            id: UUID.v4(),
+            title: 'Test Race'
+        };
+
         this.state = {
-            sailors: sailors
+            sailors: sailors,
+            race: race
         };
     }
 
@@ -91,9 +109,20 @@ class App extends Component {
         });
     }
 
+    onTitleChangeHandler(title) {
+        const race = Object.assign({}, this.state.race, {
+            title: title
+        });
+
+        this.setState({
+            race: race
+        });
+    }
+
     render() {
         return (
             <div className="app">
+                <RaceTitle title={this.state.race.title} onTitleChangeHandler={this.onTitleChangeHandler.bind(this)} />
                 <AddRacer onAddRacer={this.onAddRacer.bind(this)} />
 
                 <RacerTable onChangeHandler={this.onChangeHandler.bind(this)} sailors={this.state.sailors} />
