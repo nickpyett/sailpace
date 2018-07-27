@@ -88,16 +88,14 @@ class App extends Component {
     }
 
     onAddRacer() {
-        const sailors = this.state.sailors;
-
-        sailors.push({
+        const updatedSailors = this.state.sailors.concat({
             id: UUID.v4(),
             sailorName: '',
             boatNumber: ''
         });
 
         this.setState({
-            sailors: sailors
+            sailors: updatedSailors
         });
     }
 
