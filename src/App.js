@@ -11,10 +11,10 @@ class AddRacer extends Component {
 
 class RacerTable extends Component {
     render() {
-        let trs = [];
+        let racerRows = [];
 
         this.props.sailors.forEach(sailer => {
-            trs.push(<RacerRow key={sailer.id} sailor={sailer} onChangeHandler={this.props.onChangeHandler} />);
+            racerRows.push(<RacerRow key={sailer.id} sailor={sailer} onChangeHandler={this.props.onChangeHandler} />);
         });
 
         return (
@@ -26,7 +26,7 @@ class RacerTable extends Component {
                     </tr>
                 </thead>
                 <tbody>
-                    {trs}
+                    {racerRows}
                 </tbody>
             </table>
         );
