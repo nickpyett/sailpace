@@ -32,23 +32,15 @@ class RacerTable extends Component {
 }
 
 class RacerRow extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            sailor: props.sailor
-        };
-    }
-
     onChangeHandler(e) {
-        this.props.onChangeHandler(this.state.sailor, e.target.name, e.target.value);
+        this.props.onChangeHandler(this.props.sailor, e.target.name, e.target.value);
     }
 
     render() {
         return (
             <tr>
-                <td><input type="text" name="sailorName" value={this.state.sailor.sailorName} onChange={this.onChangeHandler.bind(this)} /></td>
-                <td><input type="text" name="boatNumber" value={this.state.sailor.boatNumber} onChange={this.onChangeHandler.bind(this)} /></td>
+                <td><input type="text" name="sailorName" value={this.props.sailor.sailorName} onChange={this.onChangeHandler.bind(this)} /></td>
+                <td><input type="text" name="boatNumber" value={this.props.sailor.boatNumber} onChange={this.onChangeHandler.bind(this)} /></td>
             </tr>
         );
     }
