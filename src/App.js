@@ -1,18 +1,12 @@
 import React, { Component } from 'react';
 
-class RacerTable extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            sailors: props.sailors
-        };
     }
 
+class RacerTable extends Component {
     render() {
         let trs = [];
 
-        this.state.sailors.forEach(sailer => {
+        this.props.sailors.forEach(sailer => {
             trs.push(<RacerRow key={sailer.id} sailor={sailer} onChangeHandler={this.props.onChangeHandler} />);
         });
 
