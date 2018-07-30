@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import UUID from 'uuid';
 
-class AddRacer extends Component {
+class AddCompetitor extends Component {
     render() {
         return (
-            <button onClick={this.props.onAddRacer}>Add Sailor</button>
+            <button onClick={this.props.onAddCompetitor}>Add Competitor</button>
         )
     }
 }
@@ -31,10 +31,10 @@ class RaceTitle extends Component {
     }
 }
 
-class RacerTable extends Component {
+class RaceTable extends Component {
     render() {
-        const racerRows = this.props.sailors.map(sailer => {
-            return <RacerRow key={sailer.id} sailor={sailer} onChangeHandler={this.props.onChangeHandler} />;
+        const racerRows = this.props.competitors.map(competitor => {
+            return <CompetitorRow key={competitor.id} competitor={competitor} onChangeHandler={this.props.onChangeHandler} />;
         });
 
         const headers = [...Array(this.props.race.lapCount).keys()].map(key => <th key={key}>Lap {key + 1}</th>);
@@ -56,40 +56,40 @@ class RacerTable extends Component {
     }
 }
 
-class RacerRow extends Component {
+class CompetitorRow extends Component {
     onChangeHandler(e) {
-        this.props.onChangeHandler(this.props.sailor, e.target.name, e.target.value);
+        this.props.onChangeHandler(this.props.competitor, e.target.name, e.target.value);
     }
 
     render() {
-        const laps = this.props.sailor.laps.map(lap => {
-            return <RacerLap key={lap.id} lap={lap} />;
+        const laps = this.props.competitor.laps.map(lap => {
+            return <CompetitorLap key={lap.id} lap={lap} />;
         });
 
         return (
             <tr>
-                <td><input type="text" name="sailorName" value={this.props.sailor.sailorName} onChange={this.onChangeHandler.bind(this)} /></td>
-                <td><input type="text" name="boatNumber" value={this.props.sailor.boatNumber} onChange={this.onChangeHandler.bind(this)} /></td>
+                <td><input type="text" name="competitorName" value={this.props.competitor.competitorName} onChange={this.onChangeHandler.bind(this)} /></td>
+                <td><input type="text" name="boatNumber" value={this.props.competitor.boatNumber} onChange={this.onChangeHandler.bind(this)} /></td>
                 {laps}
             </tr>
         );
     }
 }
 
-class RacerLap extends Component {
-    onRacerLapChange(e) {
+class CompetitorLap extends Component {
+    onCompetitorLapChange(e) {
 
     }
 
-    onRacerLapSetClick(e) {
+    onCompetitorLapSetClick(e) {
 
     }
 
     render() {
         return (
             <td>
-                <input type="text" value={this.props.lap.time} onChange={this.onRacerLapChange.bind(this)} />
-                <button onClick={this.onRacerLapSetClick.bind(this)}>Set</button>
+                <input type="text" value={this.props.lap.time} onChange={this.onCompetitorLapChange.bind(this)} />
+                <button onClick={this.onCompetitorLapSetClick.bind(this)}>Set</button>
             </td>
         );
     }
@@ -99,14 +99,14 @@ class App extends Component {
     constructor(props) {
         super(props);
 
-        const sailors = [{
+        const competitors = [{
             id: UUID.v4(),
-            sailorName: 'Sailor One',
+            competitorName: 'Sailor One',
             boatNumber: '142',
             laps: []
         }, {
             id: UUID.v4(),
-            sailorName: 'Sailor Two',
+            competitorName: 'Sailor Two',
             boatNumber: '56',
             laps: []
         }];
@@ -120,27 +120,27 @@ class App extends Component {
         const laps = [];
 
         this.state = {
-            sailors: sailors,
+            competitors: competitors,
             race: race,
             laps: laps
         };
     }
 
-    onChangeHandler(sailor, name, value) {
-        const sailors = this.state.sailors.map(sailorRow => {
-            if (sailor.id === sailorRow.id) {
-                sailorRow[name] = value;
+    onChangeHandler(competitor, name, value) {
+        const competitors = this.state.competitors.map(competitorRow => {
+            if (competitor.id === competitorRow.id) {
+                competitorRow[name] = value;
             }
 
-            return sailorRow;
+            return competitorRow;
         });
 
         this.setState({
-            sailors: sailors
+            competitors: competitors
         });
     }
 
-    onAddRacer() {
+    onAddCompetitor() {
         const laps = [...Array(this.state.race.lapCount).keys()].map(key => {
             return {
                 id: UUID.v4(),
@@ -148,15 +148,15 @@ class App extends Component {
             };
         });
 
-        const sailors = this.state.sailors.concat({
+        const competitors = this.state.competitors.concat({
             id: UUID.v4(),
-            sailorName: '',
+            competitorName: '',
             boatNumber: '',
             laps: laps
         });
 
         this.setState({
-            sailors: sailors
+            competitors: competitors
         });
     }
 
@@ -166,22 +166,22 @@ class App extends Component {
             lapCount: lapCount
         });
 
-        const sailors = this.state.sailors.map(sailorRow => {
-            const laps = sailorRow.laps.concat({
+        const competitors = this.state.competitors.map(competitorRow => {
+            const laps = competitorRow.laps.concat({
                 id: UUID.v4(),
                 time: ''
             });
 
-            const sailor = Object.assign({}, sailorRow, {
+            const competitor = Object.assign({}, competitorRow, {
                 laps: laps
             });
 
-            return sailor;
+            return competitor;
         });
 
         this.setState({
             race: race,
-            sailors: sailors
+            competitors: competitors
         });
     }
 
@@ -199,10 +199,10 @@ class App extends Component {
         return (
             <div className="app">
                 <RaceTitle title={this.state.race.title} onTitleChangeHandler={this.onTitleChangeHandler.bind(this)} />
-                <AddRacer onAddRacer={this.onAddRacer.bind(this)} />
+                <AddCompetitor onAddCompetitor={this.onAddCompetitor.bind(this)} />
                 <AddLap onAddLap={this.onAddLap.bind(this)} />
 
-                <RacerTable onChangeHandler={this.onChangeHandler.bind(this)} sailors={this.state.sailors} race={this.state.race} />
+                <RaceTable onChangeHandler={this.onChangeHandler.bind(this)} competitors={this.state.competitors} race={this.state.race} />
             </div>
         );
     }
