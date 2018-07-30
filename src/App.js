@@ -43,7 +43,7 @@ class RaceTable extends Component {
             <table>
                 <thead>
                     <tr>
-                        <th>Sailor name</th>
+                        <th>Name</th>
                         <th>Boat number</th>
                         {headers}
                     </tr>
