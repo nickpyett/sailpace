@@ -117,12 +117,9 @@ class App extends Component {
             lapCount: 0
         };
 
-        const laps = [];
-
         this.state = {
             competitors: competitors,
-            race: race,
-            laps: laps
+            race: race
         };
     }
 
