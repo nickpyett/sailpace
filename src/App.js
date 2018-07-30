@@ -158,10 +158,10 @@ class App extends Component {
     }
 
     onAddLap() {
-        const lapCount = this.state.race.lapCount + 1;
-        const race = Object.assign({}, this.state.race, {
-            lapCount: lapCount
-        });
+        const race = {
+            ...this.state.race,
+            lapCount: this.state.race.lapCount + 1
+        };
 
         const competitors = this.state.competitors.map(competitorRow => {
             const laps = competitorRow.laps.concat({
@@ -169,9 +169,10 @@ class App extends Component {
                 time: ''
             });
 
-            const competitor = Object.assign({}, competitorRow, {
+            const competitor = {
+                ...competitorRow,
                 laps: laps
-            });
+            };
 
             return competitor;
         });
@@ -183,9 +184,10 @@ class App extends Component {
     }
 
     onTitleChangeHandler(title) {
-        const race = Object.assign({}, this.state.race, {
+        const race = {
+            ...this.state.race,
             title: title
-        });
+        };
 
         this.setState({
             race: race
