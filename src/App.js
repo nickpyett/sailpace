@@ -84,7 +84,7 @@ class App extends Component {
     }
 
     onChangeHandler(sailor, name, value) {
-        const updatedSailors = this.state.sailors.map(sailorRow => {
+        const sailors = this.state.sailors.map(sailorRow => {
             if (sailor.id === sailorRow.id) {
                 sailorRow[name] = value;
             }
@@ -93,7 +93,7 @@ class App extends Component {
         });
 
         this.setState({
-            sailors: updatedSailors
+            sailors: sailors
         });
     }
 
