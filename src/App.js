@@ -164,10 +164,13 @@ class App extends Component {
         };
 
         const competitors = this.state.competitors.map(competitorRow => {
-            const laps = competitorRow.laps.concat({
-                id: UUID.v4(),
-                time: ''
-            });
+            const laps = [
+                ...competitorRow.laps,
+                {
+                    id: UUID.v4(),
+                    time: ''
+                }
+            ];
 
             const competitor = {
                 ...competitorRow,
