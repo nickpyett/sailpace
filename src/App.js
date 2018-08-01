@@ -5,7 +5,7 @@ class AddCompetitor extends Component {
     render() {
         return (
             <button onClick={this.props.onAddCompetitor}>Add Competitor</button>
-        )
+        );
     }
 }
 
@@ -13,7 +13,7 @@ class AddLap extends Component {
     render() {
         return (
             <button onClick={this.props.onAddLap}>Add Lap</button>
-        )
+        );
     }
 }
 
