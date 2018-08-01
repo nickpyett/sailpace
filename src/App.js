@@ -27,7 +27,19 @@ class RaceTitle extends Component {
             <div>
                 <label htmlFor="race-title">Race:</label> <input type="text" id="race-title" onChange={this.onTitleChangeHandler.bind(this)} value={this.props.title} />
             </div>
-        )
+        );
+    }
+}
+
+class RaceTableHeader extends Component {
+    onClick(e) {
+        console.log(e);
+    }
+
+    render() {
+        return (
+            <th>Lap {this.props.lapNumber} <button onClick={this.onClick.bind(this)}>x</button></th>
+        );
     }
 }
 
@@ -37,7 +49,7 @@ class RaceTable extends Component {
             return <CompetitorRow key={competitor.id} competitor={competitor} onChangeHandler={this.props.onChangeHandler} />;
         });
 
-        const headers = [...Array(this.props.race.lapCount).keys()].map(key => <th key={key}>Lap {key + 1}</th>);
+        const headers = this.props.laps.map(lap => <RaceTableHeader key={lap.id} lapNumber={lap.number} />);
 
         return (
             <table>
@@ -113,13 +125,13 @@ class App extends Component {
 
         const race = {
             id: UUID.v4(),
-            title: 'Test Race',
-            lapCount: 0
+            title: 'Test Race'
         };
 
         this.state = {
             competitors: competitors,
-            race: race
+            race: race,
+            laps: []
         };
     }
 
@@ -138,7 +150,7 @@ class App extends Component {
     }
 
     onAddCompetitor() {
-        const laps = [...Array(this.state.race.lapCount).keys()].map(key => {
+        const laps = this.state.laps.map(lap => {
             return {
                 id: UUID.v4(),
                 time: ''
@@ -158,16 +170,22 @@ class App extends Component {
     }
 
     onAddLap() {
-        const race = {
-            ...this.state.race,
-            lapCount: this.state.race.lapCount + 1
+        const newLap = {
+            id: UUID.v4(),
+            number: this.state.laps.length + 1
         };
+
+        const laps = [
+            ...this.state.laps,
+            newLap
+        ];
 
         const competitors = this.state.competitors.map(competitorRow => {
             const laps = [
                 ...competitorRow.laps,
                 {
                     id: UUID.v4(),
+                    lapId: newLap.id,
                     time: ''
                 }
             ];
@@ -181,8 +199,8 @@ class App extends Component {
         });
 
         this.setState({
-            race: race,
-            competitors: competitors
+            competitors: competitors,
+            laps: laps
         });
     }
 
@@ -204,7 +222,7 @@ class App extends Component {
                 <AddCompetitor onAddCompetitor={this.onAddCompetitor.bind(this)} />
                 <AddLap onAddLap={this.onAddLap.bind(this)} />
 
-                <RaceTable onChangeHandler={this.onChangeHandler.bind(this)} competitors={this.state.competitors} race={this.state.race} />
+                <RaceTable onChangeHandler={this.onChangeHandler.bind(this)} competitors={this.state.competitors} race={this.state.race} laps={this.state.laps} />
             </div>
         );
     }
