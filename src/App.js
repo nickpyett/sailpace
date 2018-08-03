@@ -38,18 +38,24 @@ class RaceTableHeader extends Component {
 
     render() {
         return (
-            <th>Lap {this.props.lapNumber} <button onClick={this.onClick.bind(this)}>x</button></th>
+            <th>Lap {this.props.lapNumber} <button onClick={this.onClick.bind(this)} disabled={this.props.disabled}>x</button></th>
         );
     }
 }
 
 class RaceTable extends Component {
     render() {
-        const racerRows = this.props.competitors.map(competitor => {
+        const competitors = this.props.competitors;
+
+        const racerRows = competitors.map(competitor => {
             return <CompetitorRow key={competitor.id} competitor={competitor} onChangeHandler={this.props.onChangeHandler} />;
         });
 
-        const headers = this.props.laps.map(lap => <RaceTableHeader key={lap.id} lapNumber={lap.number} />);
+        const headers = this.props.laps.map(lap => {
+            const disabled = this.props.laps.length > lap.number ? true : false;
+
+            return <RaceTableHeader key={lap.id} lapNumber={lap.number} disabled={disabled} />
+        });
 
         return (
             <table>
