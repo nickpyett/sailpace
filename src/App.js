@@ -70,6 +70,16 @@ class RaceTable extends Component {
 
                 break;
 
+            case 'class':
+
+                if (this.props.competitorSort.direction === 'asc') {
+                    sortFunction = (a, b) => a.class > b.class;
+                } else {
+                    sortFunction = (a, b) => a.class < b.class;
+                }
+
+                break;
+
             case 'number':
 
                 if (this.props.competitorSort.direction === 'asc') {
