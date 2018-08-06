@@ -187,10 +187,10 @@ class App extends Component {
         };
     }
 
-    onChangeHandler(competitor, name, value) {
+    onChangeHandler(competitor, key, value) {
         const competitors = this.state.competitors.map(competitorRow => {
-            if (competitor.id === competitorRow.id) {
-                competitorRow[name] = value;
+            if (competitor.id === competitorRow.id && ['name', 'number', 'class'].includes(key)) {
+                competitorRow[key] = value;
             }
 
             return competitorRow;
