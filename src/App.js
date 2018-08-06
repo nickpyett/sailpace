@@ -63,19 +63,19 @@ class RaceTable extends Component {
             case 'name':
 
                 if (this.props.competitorSort.direction === 'asc') {
-                    sortFunction = (a, b) => a.competitorName > b.competitorName;
+                    sortFunction = (a, b) => a.name > b.name;
                 } else {
-                    sortFunction = (a, b) => a.competitorName < b.competitorName;
+                    sortFunction = (a, b) => a.name < b.name;
                 }
 
                 break;
 
-            case 'boatNumber':
+            case 'number':
 
                 if (this.props.competitorSort.direction === 'asc') {
-                    sortFunction = (a, b) => a.boatNumber > b.boatNumber;
+                    sortFunction = (a, b) => a.number > b.number;
                 } else {
-                    sortFunction = (a, b) => a.boatNumber < b.boatNumber;
+                    sortFunction = (a, b) => a.number < b.number;
                 }
 
                 break;
@@ -100,7 +100,7 @@ class RaceTable extends Component {
                 <thead>
                     <tr>
                         <th>Name <button name="name" onClick={this.onSortButtonClick.bind(this)}>&#x25B2;&#x25BC;</button></th>
-                        <th>Boat number <button name="boatNumber" onClick={this.onSortButtonClick.bind(this)}>&#x25B2;&#x25BC;</button></th>
+                        <th>Number <button name="number" onClick={this.onSortButtonClick.bind(this)}>&#x25B2;&#x25BC;</button></th>
                         {headers}
                     </tr>
                 </thead>
@@ -124,8 +124,8 @@ class CompetitorRow extends Component {
 
         return (
             <tr>
-                <td><input type="text" name="competitorName" value={this.props.competitor.competitorName} onChange={this.onChangeHandler.bind(this)} /></td>
-                <td><input type="text" name="boatNumber" value={this.props.competitor.boatNumber} onChange={this.onChangeHandler.bind(this)} /></td>
+                <td><input type="text" name="name" value={this.props.competitor.name} onChange={this.onChangeHandler.bind(this)} /></td>
+                <td><input type="text" name="number" value={this.props.competitor.number} onChange={this.onChangeHandler.bind(this)} /></td>
                 {laps}
             </tr>
         );
@@ -157,13 +157,13 @@ class App extends Component {
 
         const competitors = [{
             id: UUID.v4(),
-            competitorName: 'Sailor One',
-            boatNumber: '142',
+            name: 'Sailor One',
+            number: '142',
             laps: []
         }, {
             id: UUID.v4(),
-            competitorName: 'Sailor Two',
-            boatNumber: '56',
+            name: 'Sailor Two',
+            number: '56',
             laps: []
         }];
 
@@ -207,8 +207,8 @@ class App extends Component {
 
         const competitors = this.state.competitors.concat({
             id: UUID.v4(),
-            competitorName: '',
-            boatNumber: '',
+            name: '',
+            number: '',
             laps: laps
         });
 
