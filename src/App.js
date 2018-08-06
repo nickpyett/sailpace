@@ -44,8 +44,46 @@ class RaceTableHeader extends Component {
 }
 
 class RaceTable extends Component {
+    onSortButtonClick(e) {
+        this.props.onSortButtonClick(e.target.name);
+    }
+
     render() {
         const competitors = this.props.competitors;
+        let sortFunction = null;
+
+        switch (this.props.competitorSort.orderBy) {
+            default:
+            case 'added':
+
+                // Do nothing
+
+                break;
+
+            case 'name':
+
+                if (this.props.competitorSort.direction === 'asc') {
+                    sortFunction = (a, b) => a.competitorName > b.competitorName;
+                } else {
+                    sortFunction = (a, b) => a.competitorName < b.competitorName;
+                }
+
+                break;
+
+            case 'boatNumber':
+
+                if (this.props.competitorSort.direction === 'asc') {
+                    sortFunction = (a, b) => a.boatNumber > b.boatNumber;
+                } else {
+                    sortFunction = (a, b) => a.boatNumber < b.boatNumber;
+                }
+
+                break;
+        }
+
+        if (sortFunction) {
+            competitors.sort(sortFunction);
+        }
 
         const racerRows = competitors.map(competitor => {
             return <CompetitorRow key={competitor.id} competitor={competitor} onChangeHandler={this.props.onChangeHandler} />;
@@ -61,8 +99,8 @@ class RaceTable extends Component {
             <table>
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Boat number</th>
+                        <th>Name <button name="name" onClick={this.onSortButtonClick.bind(this)}>&#x25B2;&#x25BC;</button></th>
+                        <th>Boat number <button name="boatNumber" onClick={this.onSortButtonClick.bind(this)}>&#x25B2;&#x25BC;</button></th>
                         {headers}
                     </tr>
                 </thead>
@@ -137,7 +175,11 @@ class App extends Component {
         this.state = {
             competitors: competitors,
             race: race,
-            laps: []
+            laps: [],
+            competitorSort: {
+                orderBy: 'added',
+                direction: 'desc'
+            }
         };
     }
 
@@ -221,6 +263,22 @@ class App extends Component {
         });
     }
 
+    onSortButtonClick(orderBy) {
+        const direction =
+            orderBy === this.state.competitorSort.orderBy && 'asc' === this.state.competitorSort.direction
+            ? 'desc'
+            : 'asc';
+
+        const competitorSort = {
+            'orderBy': orderBy,
+            'direction': direction
+        };
+
+        this.setState({
+            competitorSort: competitorSort
+        });
+    }
+
     render() {
         return (
             <div className="app">
@@ -228,7 +286,14 @@ class App extends Component {
                 <AddCompetitor onAddCompetitor={this.onAddCompetitor.bind(this)} />
                 <AddLap onAddLap={this.onAddLap.bind(this)} />
 
-                <RaceTable onChangeHandler={this.onChangeHandler.bind(this)} competitors={this.state.competitors} race={this.state.race} laps={this.state.laps} />
+                <RaceTable
+                    onChangeHandler={this.onChangeHandler.bind(this)}
+                    onSortButtonClick={this.onSortButtonClick.bind(this)}
+                    competitors={this.state.competitors}
+                    race={this.state.race}
+                    laps={this.state.laps}
+                    competitorSort={this.state.competitorSort}
+                />
             </div>
         );
     }
