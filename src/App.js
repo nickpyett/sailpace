@@ -50,48 +50,16 @@ class RaceTable extends Component {
 
     render() {
         const competitors = this.props.competitors;
-        let sortFunction = null;
 
-        switch (this.props.competitorSort.orderBy) {
-            default:
-            case 'added':
+        if (['name', 'class', 'number'].includes(this.props.competitorSort.orderBy)) {
+            let sortFunction = null;
 
-                // Do nothing
+            if (this.props.competitorSort.direction === 'asc') {
+                sortFunction = (a, b) => a[this.props.competitorSort.orderBy] > b[this.props.competitorSort.orderBy];
+            } else {
+                sortFunction = (a, b) => a[this.props.competitorSort.orderBy] < b[this.props.competitorSort.orderBy];
+            }
 
-                break;
-
-            case 'name':
-
-                if (this.props.competitorSort.direction === 'asc') {
-                    sortFunction = (a, b) => a.name > b.name;
-                } else {
-                    sortFunction = (a, b) => a.name < b.name;
-                }
-
-                break;
-
-            case 'class':
-
-                if (this.props.competitorSort.direction === 'asc') {
-                    sortFunction = (a, b) => a.class > b.class;
-                } else {
-                    sortFunction = (a, b) => a.class < b.class;
-                }
-
-                break;
-
-            case 'number':
-
-                if (this.props.competitorSort.direction === 'asc') {
-                    sortFunction = (a, b) => a.number > b.number;
-                } else {
-                    sortFunction = (a, b) => a.number < b.number;
-                }
-
-                break;
-        }
-
-        if (sortFunction) {
             competitors.sort(sortFunction);
         }
 
