@@ -64,7 +64,7 @@ class RaceTable extends Component {
         }
 
         const racerRows = competitors.map(competitor => {
-            return <CompetitorRow key={competitor.id} competitor={competitor} onChangeHandler={this.props.onChangeHandler} />;
+            return <CompetitorRow key={competitor.id} competitor={competitor} onChangeHandler={this.props.onChangeHandler} onCompetitorLapChange={this.props.onCompetitorLapChange} />;
         });
 
         const headers = this.props.laps.map(lap => {
@@ -99,7 +99,7 @@ class CompetitorRow extends Component {
 
     render() {
         const laps = this.props.competitor.laps.map(lap => {
-            return <CompetitorLap key={lap.id} lap={lap} />;
+            return <CompetitorLap key={lap.id} lap={lap} competitor={this.props.competitor} onCompetitorLapChange={this.props.onCompetitorLapChange} />;
         });
 
         return (
@@ -116,7 +116,7 @@ class CompetitorRow extends Component {
 
 class CompetitorLap extends Component {
     onCompetitorLapChange(e) {
-
+        this.props.onCompetitorLapChange(this.props.competitor, this.props.lap, e.target.value);
     }
 
     onCompetitorLapSetClick(e) {
@@ -126,7 +126,7 @@ class CompetitorLap extends Component {
     render() {
         return (
             <td>
-                <input type="text" value={this.props.lap.time} onChange={this.onCompetitorLapChange.bind(this)} />
+                <input type="time" step="1" value={this.props.lap.time} onChange={this.onCompetitorLapChange.bind(this)} />
                 <button onClick={this.onCompetitorLapSetClick.bind(this)}>Set</button>
             </td>
         );
@@ -275,6 +275,34 @@ class App extends Component {
         });
     }
 
+    onCompetitorLapChange(competitor, lap, value) {
+        const updatedLaps = competitor.laps.map(lapRow => {
+            if (lapRow.id === lap.id) {
+                return {
+                    id: lapRow.id,
+                    time: value
+                };
+            }
+
+            return lapRow;
+        });
+
+        const updatedCompetitors = this.state.competitors.map(competitorRow => {
+            if (competitorRow.id === competitor.id) {
+                return {
+                    ...competitorRow,
+                    laps: updatedLaps
+                };
+            }
+
+            return competitorRow;
+        });
+
+        this.setState({
+            competitors: updatedCompetitors
+        })
+    }
+
     render() {
         return (
             <div className="app">
@@ -285,6 +313,7 @@ class App extends Component {
                 <RaceTable
                     onChangeHandler={this.onChangeHandler.bind(this)}
                     onSortButtonClick={this.onSortButtonClick.bind(this)}
+                    onCompetitorLapChange={this.onCompetitorLapChange.bind(this)}
                     competitors={this.state.competitors}
                     race={this.state.race}
                     laps={this.state.laps}
