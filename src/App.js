@@ -51,7 +51,7 @@ class RaceTable extends Component {
     render() {
         const competitors = this.props.competitors;
 
-        if (['name', 'class', 'number'].includes(this.props.competitorSort.orderBy)) {
+        if (['ordinal', 'name', 'class', 'number'].includes(this.props.competitorSort.orderBy)) {
             let sortFunction = null;
 
             if (this.props.competitorSort.direction === 'asc') {
@@ -77,6 +77,7 @@ class RaceTable extends Component {
             <table>
                 <thead>
                     <tr>
+                        <th># <button name="ordinal" onClick={this.onSortButtonClick.bind(this)}>&#x25B2;&#x25BC;</button></th>
                         <th>Name <button name="name" onClick={this.onSortButtonClick.bind(this)}>&#x25B2;&#x25BC;</button></th>
                         <th>Number <button name="number" onClick={this.onSortButtonClick.bind(this)}>&#x25B2;&#x25BC;</button></th>
                         <th>Class <button name="class" onClick={this.onSortButtonClick.bind(this)}>&#x25B2;&#x25BC;</button></th>
@@ -103,6 +104,7 @@ class CompetitorRow extends Component {
 
         return (
             <tr>
+                <td>{this.props.competitor.ordinal}</td>
                 <td><input type="text" name="name" value={this.props.competitor.name} onChange={this.onChangeHandler.bind(this)} /></td>
                 <td><input type="text" name="number" value={this.props.competitor.number} onChange={this.onChangeHandler.bind(this)} /></td>
                 <td><input type="text" name="class" value={this.props.competitor.class} onChange={this.onChangeHandler.bind(this)} /></td>
@@ -136,12 +138,14 @@ class App extends Component {
         super(props);
 
         const competitors = [{
+            ordinal: 1,
             id: UUID.v4(),
             name: 'Sailor One',
             number: '142',
             class: 'Aero RS',
             laps: []
         }, {
+            ordinal: 2,
             id: UUID.v4(),
             name: 'Sailor Two',
             number: '56',
@@ -187,7 +191,16 @@ class App extends Component {
             };
         });
 
+        let ordinal = 1;
+
+        this.state.competitors.forEach(competitor => {
+            if (competitor.ordinal >= ordinal) {
+                ordinal = competitor.ordinal + 1;
+            }
+        });
+
         const competitors = this.state.competitors.concat({
+            ordinal: ordinal,
             id: UUID.v4(),
             name: '',
             number: '',
