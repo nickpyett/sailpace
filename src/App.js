@@ -101,6 +101,7 @@ class RaceTable extends Component {
                     <tr>
                         <th>Name <button name="name" onClick={this.onSortButtonClick.bind(this)}>&#x25B2;&#x25BC;</button></th>
                         <th>Number <button name="number" onClick={this.onSortButtonClick.bind(this)}>&#x25B2;&#x25BC;</button></th>
+                        <th>Class <button name="class" onClick={this.onSortButtonClick.bind(this)}>&#x25B2;&#x25BC;</button></th>
                         {headers}
                     </tr>
                 </thead>
@@ -126,6 +127,7 @@ class CompetitorRow extends Component {
             <tr>
                 <td><input type="text" name="name" value={this.props.competitor.name} onChange={this.onChangeHandler.bind(this)} /></td>
                 <td><input type="text" name="number" value={this.props.competitor.number} onChange={this.onChangeHandler.bind(this)} /></td>
+                <td><input type="text" name="class" value={this.props.competitor.class} onChange={this.onChangeHandler.bind(this)} /></td>
                 {laps}
             </tr>
         );
@@ -159,11 +161,13 @@ class App extends Component {
             id: UUID.v4(),
             name: 'Sailor One',
             number: '142',
+            class: 'Aero RS',
             laps: []
         }, {
             id: UUID.v4(),
             name: 'Sailor Two',
             number: '56',
+            class: 'Laser',
             laps: []
         }];
 
