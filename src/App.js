@@ -213,6 +213,7 @@ class App extends Component {
             id: UUID.v4(),
             name: '',
             number: '',
+            class: '',
             laps: laps
         });
 
