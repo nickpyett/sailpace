@@ -4,7 +4,7 @@ import UUID from 'uuid';
 class AddCompetitor extends Component {
     render() {
         return (
-            <button onClick={this.props.onAddCompetitor}>Add Competitor</button>
+            <button type="button" onClick={this.props.onAddCompetitor}>Add Competitor</button>
         );
     }
 }
@@ -12,7 +12,7 @@ class AddCompetitor extends Component {
 class AddLap extends Component {
     render() {
         return (
-            <button onClick={this.props.onAddLap}>Add Lap</button>
+            <button type="button" onClick={this.props.onAddLap}>Add Lap</button>
         );
     }
 }
