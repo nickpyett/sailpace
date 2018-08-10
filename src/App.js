@@ -32,13 +32,21 @@ class RaceTitle extends Component {
 }
 
 class RaceTableHeader extends Component {
-    onClick(e) {
-        console.log(e);
+    onRemoveLapClickHanlder() {
+        this.props.onRemoveLapClickHanlder(this.props.lap);
+    }
+
+    onSortButtonClick() {
+        this.props.onSortButtonClick('lap', this.props.lap);
     }
 
     render() {
         return (
-            <th>Lap {this.props.lapNumber} <button onClick={this.onClick.bind(this)} disabled={this.props.disabled}>x</button></th>
+            <th>
+                Lap {this.props.lap.number}
+                <button type="button" onClick={this.onSortButtonClick.bind(this)}>&#x25B2;&#x25BC;</button>
+                <button type="button" onClick={this.onRemoveLapClickHanlder.bind(this)} disabled={this.props.disabled}>x</button>
+            </th>
         );
     }
 }
@@ -50,65 +58,100 @@ class RaceTable extends Component {
 
     render() {
         const competitors = this.props.competitors;
+        const orderBy = this.props.competitorSort.orderBy;
+        const orderByLap = this.props.competitorSort.orderByLap;
+        const direction = this.props.competitorSort.direction;
 
-        if (['ordinal', 'name', 'class', 'number'].includes(this.props.competitorSort.orderBy)) {
+        if (['ordinal', 'name', 'class', 'number', 'lap'].includes(this.props.competitorSort.orderBy)) {
             let sortFunction = null;
 
-            if (this.props.competitorSort.direction === 'asc') {
-                sortFunction = (a, b) => a[this.props.competitorSort.orderBy] > b[this.props.competitorSort.orderBy];
+            if (orderBy !== 'lap') {
+                if (direction === 'asc') {
+                    sortFunction = (a, b) => a[orderBy] > b[orderBy];
+                } else {
+                    sortFunction = (a, b) => a[orderBy] < b[orderBy];
+                }
             } else {
-                sortFunction = (a, b) => a[this.props.competitorSort.orderBy] < b[this.props.competitorSort.orderBy];
+                sortFunction = (a, b) => {
+                    const aLap = a.laps.find(lapRow => lapRow.lapId === orderByLap.id);
+                    const bLap = b.laps.find(lapRow => lapRow.lapId === orderByLap.id);
+
+                    if (direction === 'asc') {
+                        return aLap.time > bLap.time;
+                    }
+
+                    return aLap.time < bLap.time;
+                };
             }
 
             competitors.sort(sortFunction);
         }
 
-        const racerRows = competitors.map(competitor => {
-            return <CompetitorRow key={competitor.id} competitor={competitor} onChangeHandler={this.props.onChangeHandler} onCompetitorLapChange={this.props.onCompetitorLapChange} />;
+        const competitorRows = competitors.map(competitor => {
+            return <CompetitorRow
+                key={competitor.id}
+                competitor={competitor}
+                race={this.props.race}
+                onCompetitorChangeHandler={this.props.onCompetitorChangeHandler}
+                onCompetitorLapChange={this.props.onCompetitorLapChange}
+                onRemoveCompetitorClickHandler={this.props.onRemoveCompetitorClickHandler}
+            />;
         });
 
-        const headers = this.props.laps.map(lap => {
-            const disabled = this.props.laps.length > lap.number ? true : false;
+        const tableHeaders = this.props.laps.map(lap => {
+            const disabled = this.props.laps.length > lap.number;
 
-            return <RaceTableHeader key={lap.id} lapNumber={lap.number} disabled={disabled} />
+            return <RaceTableHeader
+                key={lap.id}
+                lap={lap}
+                disabled={disabled}
+                onRemoveLapClickHanlder={this.props.onRemoveLapClickHanlder}
+                onSortButtonClick={this.props.onSortButtonClick}
+            />
         });
 
         return (
-            <table>
-                <thead>
-                    <tr>
-                        <th># <button name="ordinal" onClick={this.onSortButtonClick.bind(this)}>&#x25B2;&#x25BC;</button></th>
-                        <th>Name <button name="name" onClick={this.onSortButtonClick.bind(this)}>&#x25B2;&#x25BC;</button></th>
-                        <th>Number <button name="number" onClick={this.onSortButtonClick.bind(this)}>&#x25B2;&#x25BC;</button></th>
-                        <th>Class <button name="class" onClick={this.onSortButtonClick.bind(this)}>&#x25B2;&#x25BC;</button></th>
-                        {headers}
-                    </tr>
-                </thead>
-                <tbody>
-                    {racerRows}
-                </tbody>
-            </table>
+            <form>
+                <table>
+                    <thead>
+                        <tr>
+                            <th># <button type="button" name="ordinal" onClick={this.onSortButtonClick.bind(this)}>&#x25B2;&#x25BC;</button></th>
+                            <th>Name <button type="button" name="name" onClick={this.onSortButtonClick.bind(this)}>&#x25B2;&#x25BC;</button></th>
+                            <th>Number <button type="button" name="number" onClick={this.onSortButtonClick.bind(this)}>&#x25B2;&#x25BC;</button></th>
+                            <th>Class <button type="button" name="class" onClick={this.onSortButtonClick.bind(this)}>&#x25B2;&#x25BC;</button></th>
+                            {tableHeaders}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {competitorRows}
+                    </tbody>
+                </table>
+            </form>
         );
     }
 }
 
 class CompetitorRow extends Component {
-    onChangeHandler(e) {
-        this.props.onChangeHandler(this.props.competitor, e.target.name, e.target.value);
+    onCompetitorChangeHandler(e) {
+        this.props.onCompetitorChangeHandler(this.props.competitor, e.target.name, e.target.value);
+    }
+
+    onRemoveCompetitorClickHandler() {
+        this.props.onRemoveCompetitorClickHandler(this.props.competitor);
     }
 
     render() {
-        const laps = this.props.competitor.laps.map(lap => {
-            return <CompetitorLap key={lap.id} lap={lap} competitor={this.props.competitor} onCompetitorLapChange={this.props.onCompetitorLapChange} />;
+        const competitorLaps = this.props.competitor.laps.map(lap => {
+            return <CompetitorLap key={lap.id} lap={lap} competitor={this.props.competitor} race={this.props.race} onCompetitorLapChange={this.props.onCompetitorLapChange} />;
         });
 
         return (
             <tr>
-                <td>{this.props.competitor.ordinal}</td>
-                <td><input type="text" name="name" value={this.props.competitor.name} onChange={this.onChangeHandler.bind(this)} /></td>
-                <td><input type="text" name="number" value={this.props.competitor.number} onChange={this.onChangeHandler.bind(this)} /></td>
-                <td><input type="text" name="class" value={this.props.competitor.class} onChange={this.onChangeHandler.bind(this)} /></td>
-                {laps}
+                <td>{this.props.competitor.ordinal} <button type="button" onClick={this.onRemoveCompetitorClickHandler.bind(this)}>x</button></td>
+                <td><input type="text" name="name" value={this.props.competitor.name} onChange={this.onCompetitorChangeHandler.bind(this)} /></td>
+                <td><input type="text" name="number" value={this.props.competitor.number} onChange={this.onCompetitorChangeHandler.bind(this)} /></td>
+                <td><input type="text" name="class" value={this.props.competitor.class} onChange={this.onCompetitorChangeHandler.bind(this)} /></td>
+                {competitorLaps}
             </tr>
         );
     }
@@ -120,15 +163,51 @@ class CompetitorLap extends Component {
     }
 
     onCompetitorLapSetClick(e) {
+        const dateNow = new Date();
+        const dateRaceStarted = new Date(this.props.race.startDateTime);
 
+        let differenceInMsec = dateNow - dateRaceStarted;
+
+        const hh = Math.floor(differenceInMsec / 1000 / 60 / 60);
+        differenceInMsec -= hh * 1000 * 60 * 60;
+        const mm = Math.floor(differenceInMsec / 1000 / 60);
+        differenceInMsec -= mm * 1000 * 60;
+        const ss = Math.floor(differenceInMsec / 1000);
+        differenceInMsec -= ss * 1000;
+
+        const timeNow = '0'.concat(hh).slice(-2)
+            + ':' + '0'.concat(mm).slice(-2)
+            + ':' + '0'.concat(ss).slice(-2)
+            + '.' + '00'.concat(differenceInMsec).slice(-3);
+
+        this.props.onCompetitorLapChange(this.props.competitor, this.props.lap, timeNow);
     }
 
     render() {
+        const disabled = this.props.race.startDateTime === null || this.props.lap.time;
+
         return (
             <td>
-                <input type="time" step="1" value={this.props.lap.time} onChange={this.onCompetitorLapChange.bind(this)} />
-                <button onClick={this.onCompetitorLapSetClick.bind(this)}>Set</button>
+                <input type="text" step="1" value={this.props.lap.time} pattern="\d+:\d{2}:\d{2}\.\d{3}" onChange={this.onCompetitorLapChange.bind(this)} />
+                <button type="button" disabled={disabled} onClick={this.onCompetitorLapSetClick.bind(this)}>Set</button>
             </td>
+        );
+    }
+}
+
+class RaceStart extends Component {
+    onStartClick() {
+        this.props.onStartClick();
+    }
+
+    render() {
+        const disabled = this.props.race.startDateTime !== null;
+
+        return (
+            <div>
+                <button onClick={this.onStartClick.bind(this)} disabled={disabled}>Start Race</button>
+                <div>{this.props.timeSinceStart}</div>
+            </div>
         );
     }
 }
@@ -137,48 +216,69 @@ class App extends Component {
     constructor(props) {
         super(props);
 
-        const competitors = [{
-            ordinal: 1,
-            id: UUID.v4(),
-            name: 'Sailor One',
-            number: '142',
-            class: 'Aero RS',
-            laps: []
-        }, {
-            ordinal: 2,
-            id: UUID.v4(),
-            name: 'Sailor Two',
-            number: '56',
-            class: 'Laser',
-            laps: []
-        }];
-
         const race = {
             id: UUID.v4(),
-            title: 'Test Race'
+            title: '',
+            startDateTime: null
         };
 
-        this.state = {
-            competitors: competitors,
+        const competitorSort = {
+            orderBy: 'ordinal',
+            orderByLap: null,
+            direction: 'asc'
+        };
+
+        const timeSinceStart = '00:00:00';
+
+        const localState = JSON.parse(localStorage.getItem('state'));
+
+        const state = Object.assign({}, {
+            competitors: [],
             race: race,
             laps: [],
-            competitorSort: {
-                orderBy: 'added',
-                direction: 'desc'
-            }
-        };
+            competitorSort: competitorSort,
+            timeSinceStart: timeSinceStart
+        }, localState);
+
+        this.state = state;
     }
 
-    onChangeHandler(competitor, key, value) {
+    componentDidMount() {
+        if (null !== this.state.race.startDateTime) {
+            this.setTimeSinceStartUpdateInterval();
+        }
+    }
+
+    componentWillUnmount() {
+        if (null !== this.timeSinceStartUpdateInterval) {
+            clearInterval(this.timeSinceStartUpdateInterval);
+            console.log('timeSinceStartUpdateInterval cleared');
+        }
+    }
+
+    setAndPersistState(object) {
+        this.setState(object, () => {
+            this.persistState();
+        });
+    }
+
+    persistState() {
+        localStorage.setItem('state', JSON.stringify(this.state));
+    }
+
+    onCompetitorChangeHandler(competitor, key, value) {
         const competitors = this.state.competitors.map(competitorRow => {
-            if (competitor.id === competitorRow.id && ['name', 'number', 'class'].includes(key)) {
+            if (
+                competitor.id === competitorRow.id
+                && ['name', 'number', 'class'].includes(key)
+            ) {
                 competitorRow[key] = value;
             }
 
             return competitorRow;
         });
 
-        this.setState({
+        this.setAndPersistState({
             competitors: competitors
         });
     }
@@ -187,6 +287,7 @@ class App extends Component {
         const laps = this.state.laps.map(lap => {
             return {
                 id: UUID.v4(),
+                lapId: lap.id,
                 time: ''
             };
         });
@@ -208,7 +309,7 @@ class App extends Component {
             laps: laps
         });
 
-        this.setState({
+        this.setAndPersistState({
             competitors: competitors
         });
     }
@@ -242,7 +343,7 @@ class App extends Component {
             return competitor;
         });
 
-        this.setState({
+        this.setAndPersistState({
             competitors: competitors,
             laps: laps
         });
@@ -254,12 +355,12 @@ class App extends Component {
             title: title
         };
 
-        this.setState({
+        this.setAndPersistState({
             race: race
         });
     }
 
-    onSortButtonClick(orderBy) {
+    onSortButtonClick(orderBy, lap) {
         const direction =
             orderBy === this.state.competitorSort.orderBy && 'asc' === this.state.competitorSort.direction
             ? 'desc'
@@ -267,10 +368,11 @@ class App extends Component {
 
         const competitorSort = {
             'orderBy': orderBy,
+            'orderByLap': lap || null,
             'direction': direction
         };
 
-        this.setState({
+        this.setAndPersistState({
             competitorSort: competitorSort
         });
     }
@@ -279,7 +381,7 @@ class App extends Component {
         const updatedLaps = competitor.laps.map(lapRow => {
             if (lapRow.id === lap.id) {
                 return {
-                    id: lapRow.id,
+                    ...lapRow,
                     time: value
                 };
             }
@@ -298,27 +400,143 @@ class App extends Component {
             return competitorRow;
         });
 
-        this.setState({
+        this.setAndPersistState({
             competitors: updatedCompetitors
-        })
+        });
+    }
+
+    onStartClick() {
+        if (this.state.race.startDateTime !== null) {
+            return;
+        }
+
+        if (
+            window
+            && window.confirm
+            && ! window.confirm('Are you sure you wish to start the race?')
+        ) {
+            return;
+        }
+
+        const race = {
+            ...this.state.race,
+            startDateTime: new Date().toUTCString()
+        };
+
+        this.setAndPersistState({
+            race: race
+        });
+
+        this.setTimeSinceStartUpdateInterval();
+    }
+
+    setTimeSinceStartUpdateInterval() {
+        this.timeSinceStartUpdateInterval = setInterval(this.timeSinceStartUpdate.bind(this), 100);
+    }
+
+    timeSinceStartUpdate() {
+        const now = new Date();
+        const startDateTime = new Date(this.state.race.startDateTime);
+
+        let differenceInMsec = now - startDateTime;
+
+        const hh = Math.floor(differenceInMsec / 1000 / 60 / 60);
+        differenceInMsec -= hh * 1000 * 60 * 60;
+        const mm = Math.floor(differenceInMsec / 1000 / 60);
+        differenceInMsec -= mm * 1000 * 60;
+        const ss = Math.floor(differenceInMsec / 1000);
+        differenceInMsec -= ss * 1000;
+
+        const timeSinceStart = '0'.concat(hh).slice(-2)
+            + ':' + '0'.concat(mm).slice(-2)
+            + ':' + '0'.concat(ss).slice(-2);
+
+        this.setState({
+            timeSinceStart: timeSinceStart
+        });
+    }
+
+    onRemoveLapClickHanlder(lap) {
+        const lapIsLast = this.state.laps.every(lapRow => lapRow.number <= lap.number);
+
+        if (! lapIsLast) {
+            return;
+        }
+
+        if (
+            window
+            && window.confirm
+            && ! window.confirm('Are you sure you wish to delete this lap? This will delete all laps times for this lap. This cannot be undone.')
+        ) {
+            return;
+        }
+
+        const laps = this.state.laps.filter(lapRow => lapRow.id !== lap.id);
+
+        const competitors = this.state.competitors.map(competitor => {
+            const competitorLaps = competitor.laps.filter(competitorLap => {
+                return competitorLap.lapId !== lap.id
+            });
+
+            return {
+                ...competitor,
+                laps: competitorLaps
+            };
+        });
+
+        const competitorSort = this.state.competitorSort;
+
+        if (competitorSort.orderBy === 'lap' && lap.id === competitorSort.orderByLap.id) {
+            competitorSort.direction = 'asc';
+            competitorSort.orderBy = 'ordinal';
+            competitorSort.orderByLap = null;
+        }
+
+        this.setAndPersistState({
+            laps: laps,
+            competitors: competitors,
+            competitorSort: competitorSort
+        });
+    }
+
+    onRemoveCompetitorClickHandler(competitor) {
+        if (
+            window &&
+            window.confirm
+            && ! window.confirm('Are you sure you wish to delete this competitor? This will delete all laps times for this competitor. This cannot be undone.')
+        ) {
+            return;
+        }
+
+        const competitors = this.state.competitors.filter(competitorRow => {
+            return competitorRow.id !== competitor.id
+        });
+
+        this.setAndPersistState({
+            competitors: competitors
+        });
     }
 
     render() {
         return (
             <div className="app">
                 <RaceTitle title={this.state.race.title} onTitleChangeHandler={this.onTitleChangeHandler.bind(this)} />
-                <AddCompetitor onAddCompetitor={this.onAddCompetitor.bind(this)} />
-                <AddLap onAddLap={this.onAddLap.bind(this)} />
+                <RaceStart race={this.state.race} timeSinceStart={this.state.timeSinceStart} onStartClick={this.onStartClick.bind(this)} />
 
                 <RaceTable
-                    onChangeHandler={this.onChangeHandler.bind(this)}
+                    onCompetitorChangeHandler={this.onCompetitorChangeHandler.bind(this)}
                     onSortButtonClick={this.onSortButtonClick.bind(this)}
                     onCompetitorLapChange={this.onCompetitorLapChange.bind(this)}
+                    onRemoveLapClickHanlder={this.onRemoveLapClickHanlder.bind(this)}
+                    onRemoveCompetitorClickHandler={this.onRemoveCompetitorClickHandler.bind(this)}
                     competitors={this.state.competitors}
                     race={this.state.race}
                     laps={this.state.laps}
                     competitorSort={this.state.competitorSort}
                 />
+
+                <AddCompetitor onAddCompetitor={this.onAddCompetitor.bind(this)} />
+                <AddLap onAddLap={this.onAddLap.bind(this)} />
             </div>
         );
     }
