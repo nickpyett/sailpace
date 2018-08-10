@@ -197,7 +197,7 @@ class RaceStart extends Component {
     }
 }
 
-class App extends Component {
+class Race extends Component {
     constructor(props) {
         super(props);
 
@@ -523,6 +523,14 @@ class App extends Component {
                 <button type="button" onClick={this.onAddCompetitorHandler.bind(this)}>Add Competitor</button>
                 <button type="button" onClick={this.onAddLapHandler.bind(this)}>Add Lap</button>
             </div>
+        );
+    }
+}
+
+class App extends Component {
+    render() {
+        return (
+            <Race />
         );
     }
 }
