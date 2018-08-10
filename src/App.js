@@ -9,7 +9,7 @@ class RaceTitle extends Component {
     render() {
         return (
             <div>
-                <label htmlFor="race-title">Race:</label> <input type="text" id="race-title" onChange={this.onTitleChangeHandler.bind(this)} value={this.props.title} />
+                <label htmlFor="race-title">Race:</label> <input type="text" id="race-title" onChange={this.onTitleChangeHandler.bind(this)} value={this.props.race.title} />
             </div>
         );
     }
@@ -504,7 +504,7 @@ class App extends Component {
     render() {
         return (
             <div className="app">
-                <RaceTitle title={this.state.race.title} onTitleChangeHandler={this.onTitleChangeHandler.bind(this)} />
+                <RaceTitle race={this.state.race} onTitleChangeHandler={this.onTitleChangeHandler.bind(this)} />
                 <RaceStart race={this.state.race} timeSinceStart={this.state.timeSinceStart} onStartClick={this.onStartClick.bind(this)} />
 
                 <RaceTable
