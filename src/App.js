@@ -1,22 +1,6 @@
 import React, { Component } from 'react';
 import UUID from 'uuid';
 
-class AddCompetitor extends Component {
-    render() {
-        return (
-            <button type="button" onClick={this.props.onAddCompetitor}>Add Competitor</button>
-        );
-    }
-}
-
-class AddLap extends Component {
-    render() {
-        return (
-            <button type="button" onClick={this.props.onAddLap}>Add Lap</button>
-        );
-    }
-}
-
 class RaceTitle extends Component {
     onTitleChangeHandler(e) {
         this.props.onTitleChangeHandler(e.target.value);
@@ -535,8 +519,8 @@ class App extends Component {
                     competitorSort={this.state.competitorSort}
                 />
 
-                <AddCompetitor onAddCompetitor={this.onAddCompetitor.bind(this)} />
-                <AddLap onAddLap={this.onAddLap.bind(this)} />
+                <button type="button" onClick={this.onAddCompetitor.bind(this)}>Add Competitor</button>
+                <button type="button" onClick={this.onAddLap.bind(this)}>Add Lap</button>
             </div>
         );
     }
