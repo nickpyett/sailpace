@@ -9,7 +9,7 @@ class RaceTitle extends Component {
     render() {
         return (
             <div>
-                <label htmlFor="race-title">Race:</label> <input type="text" id="race-title" onChange={this.onRaceTitleChangeHandler.bind(this)} value={this.props.race.title} />
+                <label htmlFor="race-title">Race:</label> <input type="text" id="race-title" value={this.props.race.title} onChange={this.onRaceTitleChangeHandler.bind(this)} />
             </div>
         );
     }
@@ -30,7 +30,7 @@ class RaceTableHeader extends Component {
                 Lap {this.props.lap.number}
                 &nbsp;
                 <button type="button" onClick={this.onSortButtonClickHandler.bind(this)}>&#x25B2;&#x25BC;</button>
-                <button type="button" onClick={this.onRemoveLapClickHanlder.bind(this)} disabled={this.props.disabled}>x</button>
+                <button type="button" disabled={this.props.disabled} onClick={this.onRemoveLapClickHanlder.bind(this)}>x</button>
             </th>
         );
     }
@@ -190,7 +190,7 @@ class RaceStart extends Component {
 
         return (
             <div>
-                <button onClick={this.onRaceStartClickHandler.bind(this)} disabled={disabled}>Start Race</button>
+                <button disabled={disabled} onClick={this.onRaceStartClickHandler.bind(this)}>Start Race</button>
                 <div>{this.props.timeSinceStart}</div>
             </div>
         );
@@ -509,15 +509,15 @@ class App extends Component {
                 <RaceStart race={this.state.race} timeSinceStart={this.state.timeSinceStart} onRaceStartClickHandler={this.onRaceStartClickHandler.bind(this)} />
 
                 <RaceTable
+                    competitors={this.state.competitors}
+                    race={this.state.race}
+                    laps={this.state.laps}
+                    competitorSort={this.state.competitorSort}
                     onCompetitorChangeHandler={this.onCompetitorChangeHandler.bind(this)}
                     onSortButtonClickHandler={this.onSortButtonClickHandler.bind(this)}
                     onCompetitorLapChange={this.onCompetitorLapChange.bind(this)}
                     onRemoveLapClickHanlder={this.onRemoveLapClickHanlder.bind(this)}
                     onRemoveCompetitorClickHandler={this.onRemoveCompetitorClickHandler.bind(this)}
-                    competitors={this.state.competitors}
-                    race={this.state.race}
-                    laps={this.state.laps}
-                    competitorSort={this.state.competitorSort}
                 />
 
                 <button type="button" onClick={this.onAddCompetitorHandler.bind(this)}>Add Competitor</button>
