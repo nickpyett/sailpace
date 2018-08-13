@@ -9,7 +9,7 @@ class RaceTitle extends Component {
     render() {
         return (
             <div>
-                <label htmlFor="race-title">Race:</label> <input type="text" id="race-title" value={this.props.race.title} onChange={this.onRaceTitleChangeHandler.bind(this)} />
+                <label htmlFor="race-title">Race:</label> <input type="text" id="race-title" value={this.props.title} onChange={this.onRaceTitleChangeHandler.bind(this)} />
             </div>
         );
     }
@@ -76,7 +76,7 @@ class RaceTable extends Component {
             return <CompetitorRow
                 key={competitor.id}
                 competitor={competitor}
-                race={this.props.race}
+                startDateTime={this.props.startDateTime}
                 onCompetitorChangeHandler={this.props.onCompetitorChangeHandler}
                 onCompetitorLapChange={this.props.onCompetitorLapChange}
                 onRemoveCompetitorClickHandler={this.props.onRemoveCompetitorClickHandler}
@@ -127,7 +127,7 @@ class CompetitorRow extends Component {
 
     render() {
         const competitorLaps = this.props.competitor.laps.map(lap => {
-            return <CompetitorLap key={lap.id} lap={lap} competitor={this.props.competitor} race={this.props.race} onCompetitorLapChange={this.props.onCompetitorLapChange} />;
+            return <CompetitorLap key={lap.id} lap={lap} competitor={this.props.competitor} startDateTime={this.props.startDateTime} onCompetitorLapChange={this.props.onCompetitorLapChange} />;
         });
 
         return (
@@ -149,7 +149,7 @@ class CompetitorLap extends Component {
 
     onCompetitorLapSetClick(e) {
         const dateNow = new Date();
-        const dateRaceStarted = new Date(this.props.race.startDateTime);
+        const dateRaceStarted = new Date(this.props.startDateTime);
 
         let differenceInMsec = dateNow - dateRaceStarted;
 
@@ -169,7 +169,7 @@ class CompetitorLap extends Component {
     }
 
     render() {
-        const disabled = this.props.race.startDateTime === null || this.props.lap.time;
+        const disabled = this.props.startDateTime === null || this.props.lap.time;
 
         return (
             <td>
@@ -186,7 +186,7 @@ class RaceStart extends Component {
     }
 
     render() {
-        const disabled = this.props.race.startDateTime !== null;
+        const disabled = this.props.startDateTime !== null;
 
         return (
             <div>
@@ -201,12 +201,6 @@ class Race extends Component {
     constructor(props) {
         super(props);
 
-        const race = {
-            id: UUID.v4(),
-            title: '',
-            startDateTime: null
-        };
-
         const competitorSort = {
             orderBy: 'ordinal',
             orderByLap: null,
@@ -218,8 +212,10 @@ class Race extends Component {
         const localState = this.getPersistedState();
 
         const state = Object.assign({}, {
+            id: UUID.v4(),
+            title: '',
+            startDateTime: null,
             competitors: [],
-            race: race,
             laps: [],
             competitorSort: competitorSort,
             timeSinceStart: timeSinceStart
@@ -229,7 +225,7 @@ class Race extends Component {
     }
 
     componentDidMount() {
-        if (null !== this.state.race.startDateTime) {
+        if (null !== this.state.startDateTime) {
             this.setTimeSinceStartUpdateInterval();
         }
     }
@@ -237,7 +233,6 @@ class Race extends Component {
     componentWillUnmount() {
         if (null !== this.timeSinceStartUpdateInterval) {
             clearInterval(this.timeSinceStartUpdateInterval);
-            console.log('timeSinceStartUpdateInterval cleared');
         }
     }
 
@@ -339,13 +334,8 @@ class Race extends Component {
     }
 
     onRaceTitleChangeHandler(title) {
-        const race = {
-            ...this.state.race,
-            title: title
-        };
-
         this.setAndPersistState({
-            race: race
+            title: title
         });
     }
 
@@ -395,7 +385,7 @@ class Race extends Component {
     }
 
     onRaceStartClickHandler() {
-        if (this.state.race.startDateTime !== null) {
+        if (this.state.startDateTime !== null) {
             return;
         }
 
@@ -407,13 +397,10 @@ class Race extends Component {
             return;
         }
 
-        const race = {
-            ...this.state.race,
-            startDateTime: new Date().toUTCString()
-        };
+        const startDateTime = new Date().toUTCString();
 
         this.setAndPersistState({
-            race: race
+            startDateTime: startDateTime
         });
 
         this.setTimeSinceStartUpdateInterval();
@@ -425,7 +412,7 @@ class Race extends Component {
 
     timeSinceStartUpdate() {
         const now = new Date();
-        const startDateTime = new Date(this.state.race.startDateTime);
+        const startDateTime = new Date(this.state.startDateTime);
 
         let differenceInMsec = now - startDateTime;
 
@@ -509,12 +496,12 @@ class Race extends Component {
     render() {
         return (
             <div className="app">
-                <RaceTitle race={this.state.race} onRaceTitleChangeHandler={this.onRaceTitleChangeHandler.bind(this)} />
-                <RaceStart race={this.state.race} timeSinceStart={this.state.timeSinceStart} onRaceStartClickHandler={this.onRaceStartClickHandler.bind(this)} />
+                <RaceTitle title={this.state.title} onRaceTitleChangeHandler={this.onRaceTitleChangeHandler.bind(this)} />
+                <RaceStart startDateTime={this.state.startDateTime} timeSinceStart={this.state.timeSinceStart} onRaceStartClickHandler={this.onRaceStartClickHandler.bind(this)} />
 
                 <RaceTable
                     competitors={this.state.competitors}
-                    race={this.state.race}
+                    startDateTime={this.state.startDateTime}
                     laps={this.state.laps}
                     competitorSort={this.state.competitorSort}
                     onCompetitorChangeHandler={this.onCompetitorChangeHandler.bind(this)}
