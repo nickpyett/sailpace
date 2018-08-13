@@ -215,7 +215,7 @@ class Race extends Component {
 
         const timeSinceStart = '00:00:00';
 
-        const localState = JSON.parse(localStorage.getItem('state'));
+        const localState = this.getPersistedState();
 
         const state = Object.assign({}, {
             competitors: [],
@@ -249,6 +249,10 @@ class Race extends Component {
 
     persistState() {
         localStorage.setItem('state', JSON.stringify(this.state));
+    }
+
+    getPersistedState() {
+        return JSON.parse(localStorage.getItem('state'));
     }
 
     onCompetitorChangeHandler(competitor, key, value) {
