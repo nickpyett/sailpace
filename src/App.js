@@ -83,7 +83,7 @@ class RaceTable extends Component {
             />;
         });
 
-        const tableHeaders = this.props.laps.map(lap => {
+        const raceTableHeaders = this.props.laps.map(lap => {
             const disabled = this.props.laps.length > lap.number;
 
             return <RaceTableHeader
@@ -104,7 +104,7 @@ class RaceTable extends Component {
                             <th>Name <button type="button" name="name" onClick={this.onSortButtonClickHandler.bind(this)}>&#x25B2;&#x25BC;</button></th>
                             <th>Number <button type="button" name="number" onClick={this.onSortButtonClickHandler.bind(this)}>&#x25B2;&#x25BC;</button></th>
                             <th>Class <button type="button" name="class" onClick={this.onSortButtonClickHandler.bind(this)}>&#x25B2;&#x25BC;</button></th>
-                            {tableHeaders}
+                            {raceTableHeaders}
                         </tr>
                     </thead>
                     <tbody>
