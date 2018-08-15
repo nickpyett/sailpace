@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import UUID from 'uuid';
+import DisplayTimeEntity from 'entity/DisplayTimeEntity';
 
 class RaceTitle extends Component {
     onRaceTitleChangeHandler(e) {
@@ -105,6 +106,7 @@ class RaceTable extends Component {
                             <th>Number <button type="button" name="number" onClick={this.onSortButtonClickHandler.bind(this)}>&#x25B2;&#x25BC;</button></th>
                             <th>Class <button type="button" name="class" onClick={this.onSortButtonClickHandler.bind(this)}>&#x25B2;&#x25BC;</button></th>
                             {raceTableHeaders}
+                            <th>Total</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -137,6 +139,7 @@ class CompetitorRow extends Component {
                 <td><input type="text" name="number" value={this.props.competitor.number} onChange={this.onCompetitorChangeHandler.bind(this)} /></td>
                 <td><input type="text" name="class" value={this.props.competitor.class} onChange={this.onCompetitorChangeHandler.bind(this)} /></td>
                 {competitorLaps}
+                <td>{this.props.competitor.timeTotal}</td>
             </tr>
         );
     }
@@ -151,21 +154,11 @@ class CompetitorLap extends Component {
         const dateNow = new Date();
         const dateRaceStarted = new Date(this.props.startDateTime);
 
-        let differenceInMsec = dateNow - dateRaceStarted;
+        const differenceInMsec = dateNow - dateRaceStarted;
 
-        const hh = Math.floor(differenceInMsec / 1000 / 60 / 60);
-        differenceInMsec -= hh * 1000 * 60 * 60;
-        const mm = Math.floor(differenceInMsec / 1000 / 60);
-        differenceInMsec -= mm * 1000 * 60;
-        const ss = Math.floor(differenceInMsec / 1000);
-        differenceInMsec -= ss * 1000;
+        const displayTime = DisplayTimeEntity.fromMilliseconds(differenceInMsec);
 
-        const timeNow = '0'.concat(hh).slice(-2)
-            + ':' + '0'.concat(mm).slice(-2)
-            + ':' + '0'.concat(ss).slice(-2)
-            + '.' + '00'.concat(differenceInMsec).slice(-3);
-
-        this.props.onCompetitorLapChange(this.props.competitor, this.props.lap, timeNow);
+        this.props.onCompetitorLapChange(this.props.competitor, this.props.lap, displayTime.getInDisplayFormat());
     }
 
     render() {
@@ -237,9 +230,15 @@ class Race extends Component {
     }
 
     setAndPersistState(object) {
-        this.setState(object, () => {
-            this.persistState();
+        const promise = new Promise((resolve, reject) => {
+            this.setState(object, () => {
+                this.persistState();
+
+                resolve();
+            });
         });
+
+        return promise;
     }
 
     persistState() {
@@ -290,7 +289,8 @@ class Race extends Component {
             name: '',
             number: '',
             class: '',
-            laps: laps
+            laps: laps,
+            timeTotal: '00:00:00.000'
         });
 
         this.setAndPersistState({
@@ -368,19 +368,27 @@ class Race extends Component {
             return lapRow;
         });
 
+        let updatedCompetitor = competitor;
+
         const updatedCompetitors = this.state.competitors.map(competitorRow => {
             if (competitorRow.id === competitor.id) {
-                return {
+                updatedCompetitor = {
                     ...competitorRow,
                     laps: updatedLaps
                 };
+
+                return updatedCompetitor;
             }
 
             return competitorRow;
         });
 
-        this.setAndPersistState({
+        const promise = this.setAndPersistState({
             competitors: updatedCompetitors
+        });
+
+        promise.then(() => {
+            this.calculateCompetitorTimeTotal(updatedCompetitor);
         });
     }
 
@@ -414,21 +422,12 @@ class Race extends Component {
         const now = new Date();
         const startDateTime = new Date(this.state.startDateTime);
 
-        let differenceInMsec = now - startDateTime;
+        const differenceInMilliseconds = now - startDateTime;
 
-        const hh = Math.floor(differenceInMsec / 1000 / 60 / 60);
-        differenceInMsec -= hh * 1000 * 60 * 60;
-        const mm = Math.floor(differenceInMsec / 1000 / 60);
-        differenceInMsec -= mm * 1000 * 60;
-        const ss = Math.floor(differenceInMsec / 1000);
-        differenceInMsec -= ss * 1000;
-
-        const timeSinceStart = '0'.concat(hh).slice(-2)
-            + ':' + '0'.concat(mm).slice(-2)
-            + ':' + '0'.concat(ss).slice(-2);
+        const displayTimeEntity = DisplayTimeEntity.fromMilliseconds(differenceInMilliseconds);
 
         this.setState({
-            timeSinceStart: timeSinceStart
+            timeSinceStart: displayTimeEntity.getInDateFormat()
         });
     }
 
@@ -472,6 +471,31 @@ class Race extends Component {
             laps: laps,
             competitors: competitors,
             competitorSort: competitorSort
+        });
+    }
+
+    calculateCompetitorTimeTotal(competitor) {
+        const totalTime = competitor.laps.reduce((acc, lap) => {
+            if ('' !== lap.time) {
+                return acc + DisplayTimeEntity.fromDisplayFormat(lap.time).getTimeInSeconds();
+            }
+
+            return acc;
+        }, 0);
+
+        const competitors = this.state.competitors.map(competitorRow => {
+            if (competitorRow.id === competitor.id) {
+                return {
+                    ...competitorRow,
+                    timeTotal: DisplayTimeEntity.fromMilliseconds(totalTime * 1000).getInDisplayFormat()
+                };
+            }
+
+            return competitorRow;
+        });
+
+        this.setAndPersistState({
+            competitors: competitors
         });
     }
 
