@@ -13,7 +13,7 @@ class RaceTable extends Component {
         const orderByLap = this.props.competitorSort.orderByLap;
         const direction = this.props.competitorSort.direction;
 
-        if (['ordinal', 'name', 'class', 'number', 'lap'].includes(this.props.competitorSort.orderBy)) {
+        if (['ordinal', 'name', 'class', 'number', 'lap', 'timeTotal'].includes(this.props.competitorSort.orderBy)) {
             let sortFunction = null;
 
             if (orderBy !== 'lap') {
@@ -71,7 +71,11 @@ class RaceTable extends Component {
                             <th>Number <button type="button" name="number" onClick={this.onSortButtonClickHandler.bind(this)}>&#x25B2;&#x25BC;</button></th>
                             <th>Class <button type="button" name="class" onClick={this.onSortButtonClickHandler.bind(this)}>&#x25B2;&#x25BC;</button></th>
                             {raceTableHeaders}
-                            <th>Total</th>
+                            <th>
+                                Total
+                                &nbsp;
+                                <button type="button" name="timeTotal" onClick={this.onSortButtonClickHandler.bind(this)}>&#x25B2;&#x25BC;</button>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
