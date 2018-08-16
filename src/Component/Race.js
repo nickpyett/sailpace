@@ -203,7 +203,7 @@ class Race extends Component {
         });
 
         promise.then(() => {
-            this.calculateCompetitorTimeTotal(updatedCompetitor);
+            this.calculateCompetitorTimeTotal([updatedCompetitor]);
         });
     }
 
@@ -282,27 +282,43 @@ class Race extends Component {
             competitorSort.orderByLap = null;
         }
 
-        this.setAndPersistState({
+        const promise = this.setAndPersistState({
             laps: laps,
             competitors: competitors,
             competitorSort: competitorSort
         });
+
+        promise.then(() => {
+            this.calculateCompetitorTimeTotal(competitors);
+        });
     }
 
-    calculateCompetitorTimeTotal(competitor) {
-        const totalTime = competitor.laps.reduce((acc, lap) => {
-            if ('' !== lap.time) {
-                return acc + DisplayTimeEntity.fromDisplayFormat(lap.time).getTimeInSeconds();
-            }
+    calculateCompetitorTimeTotal(competitorsToUpdate) {
+        const competitorsTotalTimes = [];
 
-            return acc;
-        }, 0);
+        competitorsToUpdate.forEach((competitorToUpdate) => {
+            const timeTotal = competitorToUpdate.laps.reduce((accumulatedTimeInSeconds, lap) => {
+                if ('' !== lap.time) {
+                    const lapTimeInSeconds = DisplayTimeEntity
+                        .fromDisplayFormat(lap.time)
+                        .getTimeInSeconds();
+
+                    return accumulatedTimeInSeconds + lapTimeInSeconds;
+                }
+
+                return accumulatedTimeInSeconds;
+            }, 0);
+
+            competitorsTotalTimes[competitorToUpdate.id] = timeTotal;
+        });
 
         const competitors = this.state.competitors.map(competitorRow => {
-            if (competitorRow.id === competitor.id) {
+            if (Object.keys(competitorsTotalTimes).includes(competitorRow.id)) {
+                const timeTotalInMilliseconds = competitorsTotalTimes[competitorRow.id] * 1000;
+
                 return {
                     ...competitorRow,
-                    timeTotal: DisplayTimeEntity.fromMilliseconds(totalTime * 1000).getInDisplayFormat()
+                    timeTotal: DisplayTimeEntity.fromMilliseconds(timeTotalInMilliseconds).getInDisplayFormat()
                 };
             }
 
