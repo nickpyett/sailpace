@@ -242,7 +242,7 @@ class Race extends Component {
         const displayTimeEntity = DisplayTimeEntity.fromMilliseconds(differenceInMilliseconds);
 
         this.setState({
-            timeSinceStart: displayTimeEntity.getInDateFormat()
+            timeSinceStart: displayTimeEntity.getInTimeFormat()
         });
     }
 
