@@ -9,11 +9,10 @@ class RaceTable extends Component {
 
     render() {
         const competitors = this.props.competitors;
-        const orderBy = this.props.competitorSort.orderBy;
-        const orderByLap = this.props.competitorSort.orderByLap;
-        const direction = this.props.competitorSort.direction;
 
-        if (['ordinal', 'name', 'class', 'number', 'lap', 'timeTotal'].includes(this.props.competitorSort.orderBy)) {
+        const {orderBy, orderByLap, direction} = this.props.competitorSort;
+
+        if (['ordinal', 'name', 'class', 'number', 'lap', 'timeTotal'].includes(orderBy)) {
             let sortFunction = null;
 
             if (orderBy !== 'lap') {
