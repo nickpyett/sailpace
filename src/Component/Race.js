@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import UUID from 'uuid';
 import DisplayTimeEntity from 'Entity/DisplayTimeEntity';
 import CompetitorSortEntity from 'Entity/CompetitorSortEntity';
+import RaceEntity from 'Entity/RaceEntity';
 import RaceTitle from 'Component/RaceTitle';
 import RaceStart from 'Component/RaceStart';
 import RaceTable from 'Component/RaceTable';
@@ -11,20 +12,11 @@ class Race extends Component {
         super(props);
 
         const competitorSort = new CompetitorSortEntity();
-
-        const timeSinceStart = '00:00:00';
+        const race = new RaceEntity();
 
         const localState = this.getPersistedState();
 
-        const state = Object.assign({}, {
-            id: UUID.v4(),
-            title: '',
-            startDateTime: null,
-            competitors: [],
-            laps: [],
-            competitorSort: competitorSort,
-            timeSinceStart: timeSinceStart
-        }, localState);
+        const state = Object.assign({}, race, localState);
 
         this.state = state;
     }
