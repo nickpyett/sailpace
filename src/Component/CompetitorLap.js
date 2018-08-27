@@ -10,9 +10,9 @@ class CompetitorLap extends Component {
         const dateNow = new Date();
         const dateRaceStarted = new Date(this.props.startDateTime);
 
-        const differenceInMsec = dateNow - dateRaceStarted;
+        const differenceInMilliseconds = dateNow - dateRaceStarted;
 
-        const displayTime = DisplayTimeEntity.fromMilliseconds(differenceInMsec);
+        const displayTime = DisplayTimeEntity.fromMilliseconds(differenceInMilliseconds);
 
         this.props.onCompetitorLapChange(this.props.competitor, this.props.lap, displayTime.getInDisplayFormat());
     }
