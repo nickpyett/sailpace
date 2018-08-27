@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import UUID from 'uuid';
 import DisplayTimeEntity from 'Entity/DisplayTimeEntity';
+import CompetitorSortEntity from 'Entity/CompetitorSortEntity';
 import RaceTitle from 'Component/RaceTitle';
 import RaceStart from 'Component/RaceStart';
 import RaceTable from 'Component/RaceTable';
@@ -9,11 +10,7 @@ class Race extends Component {
     constructor(props) {
         super(props);
 
-        const competitorSort = {
-            orderBy: 'ordinal',
-            orderByLap: null,
-            direction: 'asc'
-        };
+        const competitorSort = new CompetitorSortEntity();
 
         const timeSinceStart = '00:00:00';
 
