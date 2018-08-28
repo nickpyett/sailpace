@@ -12,25 +12,12 @@ class Race extends Component {
         super(props);
 
         const competitorSort = new CompetitorSortEntity();
-        const race = new RaceEntity();
-
+        const race = new RaceEntity(competitorSort);
         const localState = this.getPersistedState();
 
         const state = Object.assign({}, race, localState);
 
         this.state = state;
-    }
-
-    componentDidMount() {
-        if (null !== this.state.startDateTime) {
-            this.setTimeSinceStartUpdateInterval();
-        }
-    }
-
-    componentWillUnmount() {
-        if (null !== this.timeSinceStartUpdateInterval) {
-            clearInterval(this.timeSinceStartUpdateInterval);
-        }
     }
 
     setAndPersistState(object) {
@@ -196,42 +183,11 @@ class Race extends Component {
         });
     }
 
-    onRaceStartClickHandler() {
-        if (this.state.startDateTime !== null) {
-            return;
-        }
-
-        if (
-            window
-            && window.confirm
-            && ! window.confirm('Are you sure you wish to start the race?')
-        ) {
-            return;
-        }
-
+    setStartDateTimeHandler() {
         const startDateTime = new Date().toUTCString();
 
         this.setAndPersistState({
             startDateTime: startDateTime
-        });
-
-        this.setTimeSinceStartUpdateInterval();
-    }
-
-    setTimeSinceStartUpdateInterval() {
-        this.timeSinceStartUpdateInterval = setInterval(this.timeSinceStartUpdate.bind(this), 100);
-    }
-
-    timeSinceStartUpdate() {
-        const now = new Date();
-        const startDateTime = new Date(this.state.startDateTime);
-
-        const differenceInMilliseconds = now - startDateTime;
-
-        const displayTimeEntity = DisplayTimeEntity.fromMilliseconds(differenceInMilliseconds);
-
-        this.setState({
-            timeSinceStart: displayTimeEntity.getInTimeFormat()
         });
     }
 
@@ -341,7 +297,7 @@ class Race extends Component {
         return (
             <div className="race">
                 <RaceTitle title={this.state.title} onRaceTitleChangeHandler={this.onRaceTitleChangeHandler.bind(this)} />
-                <RaceStart startDateTime={this.state.startDateTime} timeSinceStart={this.state.timeSinceStart} onRaceStartClickHandler={this.onRaceStartClickHandler.bind(this)} />
+                <RaceStart startDateTime={this.state.startDateTime} timeSinceStart={this.state.timeSinceStart} setStartDateTimeHandler={this.setStartDateTimeHandler.bind(this)} />
 
                 <RaceTable
                     competitors={this.state.competitors}
