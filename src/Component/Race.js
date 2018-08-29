@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import UUID from 'uuid';
 import DisplayTimeEntity from 'Entity/DisplayTimeEntity';
+import CompetitorEntity from 'Entity/CompetitorEntity';
+import CompetitorLapEntity from 'Entity/CompetitorLapEntity';
 import CompetitorSortEntity from 'Entity/CompetitorSortEntity';
 import RaceEntity from 'Entity/RaceEntity';
+import RaceLapEntity from 'Entity/RaceLapEntity';
 import RaceTitle from 'Component/RaceTitle';
 import RaceStart from 'Component/RaceStart';
 import RaceTable from 'Component/RaceTable';
@@ -58,12 +61,8 @@ class Race extends Component {
     }
 
     onAddCompetitorHandler() {
-        const laps = this.state.laps.map(lap => {
-            return {
-                id: UUID.v4(),
-                lapId: lap.id,
-                time: ''
-            };
+        const competitorLaps = this.state.laps.map(lap => {
+            return new CompetitorLapEntity(lap);
         });
 
         let ordinal = 1;
@@ -74,15 +73,9 @@ class Race extends Component {
             }
         });
 
-        const competitors = this.state.competitors.concat({
-            ordinal: ordinal,
-            id: UUID.v4(),
-            name: '',
-            number: '',
-            class: '',
-            laps: laps,
-            timeTotal: '00:00:00.000'
-        });
+        const competitor = new CompetitorEntity(ordinal, competitorLaps);
+
+        const competitors = this.state.competitors.concat(competitor);
 
         this.setAndPersistState({
             competitors: competitors
@@ -90,10 +83,9 @@ class Race extends Component {
     }
 
     onAddLapHandler() {
-        const newLap = {
-            id: UUID.v4(),
-            number: this.state.laps.length + 1
-        };
+        const lapNumber = this.state.laps.length + 1;
+
+        const newLap = new RaceLapEntity(lapNumber);
 
         const laps = [
             ...this.state.laps,
@@ -101,18 +93,14 @@ class Race extends Component {
         ];
 
         const competitors = this.state.competitors.map(competitorRow => {
-            const laps = [
+            const competitorLaps = [
                 ...competitorRow.laps,
-                {
-                    id: UUID.v4(),
-                    lapId: newLap.id,
-                    time: ''
-                }
+                new CompetitorLapEntity(newLap)
             ];
 
             const competitor = {
                 ...competitorRow,
-                laps: laps
+                laps: competitorLaps
             };
 
             return competitor;
