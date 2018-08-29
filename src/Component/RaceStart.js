@@ -46,11 +46,7 @@ class RaceStart extends Component {
             return;
         }
 
-        if (
-            window
-            && window.confirm
-            && ! window.confirm('Are you sure you wish to start the race?')
-        ) {
+        if (! window.confirm('Are you sure you wish to start the race?')) {
             return;
         }
 

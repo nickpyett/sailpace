@@ -198,11 +198,7 @@ class Race extends Component {
             return;
         }
 
-        if (
-            window
-            && window.confirm
-            && ! window.confirm('Are you sure you wish to delete this lap? This will delete all laps times for this lap. This cannot be undone.')
-        ) {
+        if (! window.confirm('Are you sure you wish to delete this lap? This will delete all laps times for this lap. This cannot be undone.')) {
             return;
         }
 
@@ -276,11 +272,7 @@ class Race extends Component {
     }
 
     onRemoveCompetitorClickHandler(competitor) {
-        if (
-            window &&
-            window.confirm
-            && ! window.confirm('Are you sure you wish to delete this competitor? This will delete all laps times for this competitor. This cannot be undone.')
-        ) {
+        if (! window.confirm('Are you sure you wish to delete this competitor? This will delete all laps times for this competitor. This cannot be undone.')) {
             return;
         }
 
