@@ -6,7 +6,7 @@ class RaceStart extends Component {
         super(props);
 
         this.state = {
-            timeSinceStart: null
+            timeSinceStart: this.props.timeSinceStart
         };
 
         this.timeSinceStartUpdateInterval = null;
