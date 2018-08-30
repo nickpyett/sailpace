@@ -5,7 +5,7 @@ class About extends Component {
         return (
             <div>
                 <h1>About</h1>
-                <p>Sailpace is an app to recored race times.</p>
+                <p>Sailpace is an app to record race times.</p>
             </div>
         );
     }
