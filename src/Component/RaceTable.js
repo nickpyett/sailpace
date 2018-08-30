@@ -75,6 +75,7 @@ class RaceTable extends Component {
                                 &nbsp;
                                 <button type="button" name="timeTotal" onClick={this.onSortButtonClickHandler.bind(this)}>&#x25B2;&#x25BC;</button>
                             </th>
+                            <th>Completed</th>
                         </tr>
                     </thead>
                     <tbody>

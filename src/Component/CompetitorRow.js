@@ -11,9 +11,21 @@ class CompetitorRow extends Component {
     }
 
     render() {
+        let raceCompleted = true;
+
         const competitorLaps = this.props.competitor.laps.map(lap => {
+            if (lap.time === '') {
+                raceCompleted = false;
+            }
+
             return <CompetitorLap key={lap.id} lap={lap} competitor={this.props.competitor} startDateTime={this.props.startDateTime} onCompetitorLapChange={this.props.onCompetitorLapChange} />;
         });
+
+        if (0 === this.props.competitor.laps.length) {
+            raceCompleted = false;
+        }
+
+        const completed = raceCompleted ? String.fromCharCode('10004') : '-';
 
         return (
             <tr>
@@ -23,6 +35,7 @@ class CompetitorRow extends Component {
                 <td><input type="text" name="class" value={this.props.competitor.class} onChange={this.onCompetitorChangeHandler.bind(this)} /></td>
                 {competitorLaps}
                 <td>{this.props.competitor.timeTotal}</td>
+                <td style={{textAlign: 'center'}}>{completed}</td>
             </tr>
         );
     }
