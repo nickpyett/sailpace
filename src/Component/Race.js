@@ -13,6 +13,8 @@ class Race extends Component {
     constructor(props) {
         super(props);
 
+        this.id = props.match.params.id;
+
         const competitorSort = new CompetitorSortEntity();
         const race = new RaceEntity(competitorSort);
         const localState = this.getPersistedState();
@@ -35,11 +37,36 @@ class Race extends Component {
     }
 
     persistState() {
-        localStorage.setItem('state', JSON.stringify(this.state));
+        const races = JSON.parse(localStorage.getItem('races')) || [];
+        const raceId = this.id;
+        let raceExists = false;
+
+        const updatedRaces = races.map(race => {
+            if (race.id === raceId) {
+                raceExists = true;
+
+                return this.state;
+            }
+
+            return race;
+        });
+
+        if (! raceExists) {
+            this.id = this.state.id;
+            
+            updatedRaces.push(this.state);
+        }
+
+        localStorage.setItem('races', JSON.stringify(updatedRaces));
     }
 
     getPersistedState() {
-        return JSON.parse(localStorage.getItem('state'));
+        const races = JSON.parse(localStorage.getItem('races')) || [];
+
+        const raceId = this.id;
+        const race = races.find(race => race.id === raceId);
+
+        return race || {};
     }
 
     onCompetitorChangeHandler(competitor, key, value) {
@@ -275,6 +302,8 @@ class Race extends Component {
     render() {
         return (
             <div className="race">
+                <h1>Race</h1>
+
                 <RaceTitle title={this.state.title} onRaceTitleChangeHandler={this.onRaceTitleChangeHandler.bind(this)} />
                 <RaceStart startDateTime={this.state.startDateTime} timeSinceStart={this.state.timeSinceStart} setStartDateTimeHandler={this.setStartDateTimeHandler.bind(this)} />
 

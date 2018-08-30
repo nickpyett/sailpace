@@ -9,6 +9,7 @@ class RaceEntity {
         this.laps = [];
         this.competitorSort = competitorSort;
         this.timeSinceStart = '00:00:00';
+        this.dateTimeCreated = (new Date()).toUTCString();
     }
 }
 

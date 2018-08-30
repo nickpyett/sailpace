@@ -1,10 +1,17 @@
 import React, { Component } from 'react';
-import Race from 'Component/Race';
+import { BrowserRouter as Router } from 'react-router-dom';
+import Header from 'Component/Header';
+import Main from 'Component/Main';
 
 class App extends Component {
     render() {
         return (
-            <Race />
+            <Router>
+                <div>
+                    <Header />
+                    <Main />
+                </div>
+            </Router>
         );
     }
 }
