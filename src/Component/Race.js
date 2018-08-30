@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import UUID from 'uuid';
 import DisplayTimeEntity from 'Entity/DisplayTimeEntity';
 import CompetitorEntity from 'Entity/CompetitorEntity';
 import CompetitorLapEntity from 'Entity/CompetitorLapEntity';
