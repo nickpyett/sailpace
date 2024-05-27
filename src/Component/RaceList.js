@@ -19,9 +19,12 @@ class RaceList extends Component {
                 <h1>Race List</h1>
 
                 <ul>
-                    <li><Link to={'/race/' + race.id}>+ Add New</Link></li>
                     {links}
                 </ul>
+
+                <div>
+                    <Link to={'/race/' + race.id}>+ Add New</Link>
+                </div>
             </div>
         );
     }
