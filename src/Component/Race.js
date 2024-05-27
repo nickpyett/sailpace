@@ -8,6 +8,7 @@ import RaceLapEntity from 'Entity/RaceLapEntity';
 import RaceTitle from 'Component/RaceTitle';
 import RaceStart from 'Component/RaceStart';
 import RaceTable from 'Component/RaceTable';
+import RaceEnd from 'Component/RaceEnd';
 
 class Race extends Component {
     constructor(props) {
@@ -22,18 +23,20 @@ class Race extends Component {
         const state = Object.assign({}, race, localState);
 
         this.state = state;
+        this.raceTime = 0;
+        this.raceTimeUpdateInterval = null;
     }
 
-    setAndPersistState(object) {
-        const promise = new Promise((resolve, reject) => {
-            this.setState(object, () => {
-                this.persistState();
+    componentDidMount() {
+        if (this.state.startDateTime && ! this.state.endDateTime) {
+            this.setRaceTimeUpdateInterval();
+        }
+    }
 
-                resolve();
-            });
-        });
-
-        return promise;
+    componentWillUnmount() {
+        if (this.raceTimeUpdateInterval) {
+            clearInterval(this.raceTimeUpdateInterval);
+        }
     }
 
     persistState() {
@@ -67,6 +70,18 @@ class Race extends Component {
         const race = races.find(race => race.id === raceId);
 
         return race || {};
+    }
+
+    setAndPersistState(object) {
+        const promise = new Promise((resolve, reject) => {
+            this.setState(object, () => {
+                this.persistState();
+
+                resolve();
+            });
+        });
+
+        return promise;
     }
 
     onCompetitorChangeHandler(competitor, key, value) {
@@ -197,15 +212,42 @@ class Race extends Component {
         });
     }
 
+    setRaceTimeUpdateInterval() {
+        this.raceTimeUpdateInterval = setInterval(this.raceTimeUpdate.bind(this), 100);
+    }
+
+    raceTimeUpdate() {
+        const now = new Date();
+        const startDateTime = new Date(this.state.startDateTime);
+
+        const differenceInMilliseconds = now - startDateTime;
+
+        const displayTimeEntity = DisplayTimeEntity.fromMilliseconds(differenceInMilliseconds);
+
+        this.setState({
+            raceTime: displayTimeEntity.getInTimeFormat()
+        });
+    }
+
     setStartDateTimeHandler() {
         const startDateTime = new Date().toUTCString();
 
         this.setAndPersistState({
             startDateTime: startDateTime
         });
+
+        this.setRaceTimeUpdateInterval();
     }
 
-    onRemoveLapClickHanlder(lap) {
+    setEndDateTimeHandler() {
+        const now = new Date().toUTCString();
+
+        this.setAndPersistState({
+            endDateTime: now,
+        });
+    }
+
+    onRemoveLapClickHandler(lap) {
         const lapIsLast = this.state.laps.every(lapRow => lapRow.number <= lap.number);
 
         if (! lapIsLast) {
@@ -305,7 +347,9 @@ class Race extends Component {
                 <h1>Race</h1>
 
                 <RaceTitle title={this.state.title} onRaceTitleChangeHandler={this.onRaceTitleChangeHandler.bind(this)} />
-                <RaceStart startDateTime={this.state.startDateTime} timeSinceStart={this.state.timeSinceStart} setStartDateTimeHandler={this.setStartDateTimeHandler.bind(this)} />
+                <RaceStart startDateTime={this.state.startDateTime} endDateTime={this.state.endDateTime} setStartDateTimeHandler={this.setStartDateTimeHandler.bind(this)} />
+
+                <div>{this.state.raceTime}</div>
 
                 <RaceTable
                     competitors={this.state.competitors}
@@ -315,12 +359,14 @@ class Race extends Component {
                     onCompetitorChangeHandler={this.onCompetitorChangeHandler.bind(this)}
                     onSortButtonClickHandler={this.onSortButtonClickHandler.bind(this)}
                     onCompetitorLapChange={this.onCompetitorLapChange.bind(this)}
-                    onRemoveLapClickHanlder={this.onRemoveLapClickHanlder.bind(this)}
+                    onRemoveLapClickHandler={this.onRemoveLapClickHandler.bind(this)}
                     onRemoveCompetitorClickHandler={this.onRemoveCompetitorClickHandler.bind(this)}
                 />
 
                 <button type="button" onClick={this.onAddCompetitorHandler.bind(this)}>Add Competitor</button>
                 <button type="button" onClick={this.onAddLapHandler.bind(this)}>Add Lap</button>
+
+                <RaceEnd endDateTime={this.state.endDateTime} setEndDateTimeHandler={this.setEndDateTimeHandler.bind(this)} />
             </div>
         );
     }

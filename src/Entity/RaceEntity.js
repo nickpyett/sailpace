@@ -5,6 +5,7 @@ class RaceEntity {
         this.id = UUID.v4();
         this.title = '';
         this.startDateTime = null;
+        this.endDateTime = null;
         this.competitors = [];
         this.laps = [];
         this.competitorSort = competitorSort;
