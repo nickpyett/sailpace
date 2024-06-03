@@ -14,7 +14,11 @@ class Race extends Component {
     constructor(props) {
         super(props);
 
-        this.id = props.match.params.id;
+        const pathArray = window.location.pathname.split('/');
+
+        // This ID should be set via React Router, but it doesn't work with 
+        // React Components, so this is a quick fix
+        this.id = pathArray[2];
 
         const competitorSort = new CompetitorSortEntity();
         const race = new RaceEntity(competitorSort);
