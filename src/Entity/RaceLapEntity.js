@@ -1,8 +1,8 @@
-import UUID from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 class RaceLapEntity {
     constructor(lapNumber) {
-        this.id = UUID.v4();
+        this.id = uuidv4();
         this.number = lapNumber;
     }
 }

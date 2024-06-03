@@ -1,8 +1,8 @@
-import UUID from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 class CompetitorEntity {
     constructor(ordinal, competitorLaps) {
-        this.id = UUID.v4();
+        this.id = uuidv4();
         this.ordinal = ordinal;
         this.name = '';
         this.number = '';

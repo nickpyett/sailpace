@@ -1,8 +1,8 @@
-import UUID from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 class RaceEntity {
     constructor(competitorSort) {
-        this.id = UUID.v4();
+        this.id = uuidv4();
         this.title = '';
         this.startDateTime = null;
         this.endDateTime = null;

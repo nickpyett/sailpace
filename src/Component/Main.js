@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import About from 'Component/About';
-import RaceOptions from 'Component/RaceOptions';
+import RaceList from 'Component/RaceList';
+import Race from 'Component/Race';
 
 class Main extends Component {
     render() {
         return (
-            <Switch>
-                <Route exact path="/" component={RaceOptions} />
-                <Route path="/race" component={RaceOptions} />
-                <Route path="/about" component={About} />
-            </Switch>
+            <Routes>
+                <Route path="/" element={<RaceList />} />
+                <Route path="race" element={<RaceList />} />
+                <Route path="about" element={<About />} />
+                <Route path="race/:id" element={<Race />} />
+            </Routes>
         );
     }
 }
