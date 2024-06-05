@@ -7,23 +7,27 @@ class RaceList extends Component {
         const races = JSON.parse(localStorage.getItem('races')) || [];
 
         const links = races.map(race => {
-            const title = (race.title ? race.title : 'Race') + ' (' + race.dateTimeCreated + ')';
-
-            return <li key={race.id}><Link to={'/race/' + race.id}>{title}</Link></li>;
+            return <li key={race.id} class="my-2">
+                <Link to={'/race/' + race.id}>
+                    {race.title ? <strong class="mr-3">{race.title}</strong> : ''}
+                    <span class="uppercase text-xs mr-3">{race.dateTimeCreated}</span>
+                    {race.endDateTime ? <span class="bg-sky-800 text-white text-xs inline p-1 px-2 rounded-full">finished</span> : ''}
+                </Link>
+            </li>;
         });
 
         const race = new RaceEntity(null);
 
         return (
             <div>
-                <h1>Race List</h1>
+                <h1 class="page-header">Race List</h1>
 
-                <ul>
+                <ul class="my-4">
                     {links}
                 </ul>
 
                 <div>
-                    <Link to={'/race/' + race.id}>+ Add New</Link>
+                    <Link to={'/race/' + race.id} class="bg-sky-800 text-white px-2 py-1 rounded inline-block hover:bg-sky-700">+ New Race</Link>
                 </div>
             </div>
         );
