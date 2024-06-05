@@ -27,7 +27,7 @@ class RaceList extends Component {
                 </ul>
 
                 <div>
-                    <Link to={'/race/' + race.id} class="bg-sky-800 text-white px-2 py-1 rounded inline-block hover:bg-sky-700">+ New Race</Link>
+                    <Link to={'/race/' + race.id} class="cta">+ New Race</Link>
                 </div>
             </div>
         );
