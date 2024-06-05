@@ -351,9 +351,11 @@ class Race extends Component {
                 <h1 class="page-header">Race</h1>
 
                 <RaceTitle title={this.state.title} onRaceTitleChangeHandler={this.onRaceTitleChangeHandler.bind(this)} />
-                <RaceStart startDateTime={this.state.startDateTime} endDateTime={this.state.endDateTime} setStartDateTimeHandler={this.setStartDateTimeHandler.bind(this)} />
 
-                <div>{this.state.raceTime}</div>
+                <div class="my-2">
+                    <span class="inline-block bg-purple-700 px-2 text-white text-sm font-bold rounded-l leading-6">Timer</span>
+                    <span class="inline-block bg-gray-200 px-2 rounded-r">{this.state.raceTime ? this.state.raceTime : '-'}</span>
+                </div>
 
                 <RaceTable
                     competitors={this.state.competitors}
@@ -367,10 +369,15 @@ class Race extends Component {
                     onRemoveCompetitorClickHandler={this.onRemoveCompetitorClickHandler.bind(this)}
                 />
 
-                <button type="button" onClick={this.onAddCompetitorHandler.bind(this)}>Add Competitor</button>
-                <button type="button" onClick={this.onAddLapHandler.bind(this)}>Add Lap</button>
+                <div class="my-2">
+                    <button type="button" onClick={this.onAddCompetitorHandler.bind(this)} class="cta mr-2">Add Competitor</button>
+                    <button type="button" onClick={this.onAddLapHandler.bind(this)}  class="cta">Add Lap</button>
+                </div>
 
-                <RaceEnd endDateTime={this.state.endDateTime} setEndDateTimeHandler={this.setEndDateTimeHandler.bind(this)} />
+                <div class="my-2">
+                    <RaceStart startDateTime={this.state.startDateTime} setStartDateTimeHandler={this.setStartDateTimeHandler.bind(this)} />
+                    <RaceEnd startDateTime={this.state.startDateTime} endDateTime={this.state.endDateTime} setEndDateTimeHandler={this.setEndDateTimeHandler.bind(this)} />
+                </div>
             </div>
         );
     }
