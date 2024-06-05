@@ -348,7 +348,7 @@ class Race extends Component {
     render() {
         return (
             <div className="race">
-                <h1>Race</h1>
+                <h1 class="page-header">Race</h1>
 
                 <RaceTitle title={this.state.title} onRaceTitleChangeHandler={this.onRaceTitleChangeHandler.bind(this)} />
                 <RaceStart startDateTime={this.state.startDateTime} endDateTime={this.state.endDateTime} setStartDateTimeHandler={this.setStartDateTimeHandler.bind(this)} />
