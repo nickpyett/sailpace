@@ -14,12 +14,10 @@ class RaceEnd extends Component {
     }
 
     render() {
-        const disabled = this.props.endDateTime !== null;
+        const disabled = this.props.startDateTime === null || this.props.endDateTime !== null;
 
         return (
-            <div>
-                <button disabled={disabled} onClick={this.onRaceEndClickHandler.bind(this)}>End Race</button>
-            </div>
+            <button disabled={disabled} onClick={this.onRaceEndClickHandler.bind(this)} class="cta disabled:bg-gray-500">End Race</button>
         );
     }
 }
