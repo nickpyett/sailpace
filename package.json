@@ -6,11 +6,13 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.23.1",
-    "react-scripts": "5.0.1"
+    "react-scripts": "^5.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "react-scripts start && npm run start:css",
+    "start:css": "tailwind -i ./src/index.src.css -o ./src/index.css --watch",
+    "build": "react-scripts build && npm run build:css",
+    "build:css": "tailwind -i ./src/index.src.css -o ./src/index.css",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
@@ -27,6 +29,7 @@
     ]
   },
   "devDependencies": {
-    "@babel/plugin-transform-private-property-in-object": "^7.24.6"
+    "@babel/plugin-transform-private-property-in-object": "^7.24.6",
+    "tailwindcss": "^3.4.3"
   }
 }
