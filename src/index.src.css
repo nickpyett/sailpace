@@ -4,6 +4,10 @@
 
 @layer components {
     .page-header {
-      @apply font-bold text-2xl mb-2;
+        @apply font-bold text-2xl mb-2;
     }
-  }
+
+    .cta {
+        @apply bg-sky-800 text-white px-2 py-1 rounded inline-block hover:bg-sky-700 cursor-pointer;
+    }
+}
