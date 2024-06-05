@@ -21,9 +21,9 @@ class CompetitorLap extends Component {
         const disabled = this.props.startDateTime === null || this.props.lap.time;
 
         return (
-            <td>
-                <input type="text" step="1" value={this.props.lap.time} pattern="\d+:\d{2}:\d{2}\.\d{3}" onChange={this.onCompetitorLapChange.bind(this)} />
-                <button type="button" disabled={disabled} onClick={this.onCompetitorLapSetClick.bind(this)}>Set</button>
+            <td class="py-2">
+                <input type="text" value={this.props.lap.time} pattern="\d+:\d{2}:\d{2}\.\d{3}" onChange={this.onCompetitorLapChange.bind(this)} class="w-[120px]" />
+                <button type="button" disabled={disabled} onClick={this.onCompetitorLapSetClick.bind(this)} class="cta py-0 px-1 text-sm">set</button>
             </td>
         );
     }

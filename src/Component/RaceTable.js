@@ -61,21 +61,21 @@ class RaceTable extends Component {
         });
 
         return (
-            <form>
+            <form class="my-2 table-auto">
                 <table>
                     <thead>
-                        <tr>
-                            <th># <button type="button" name="ordinal" onClick={this.onSortButtonClickHandler.bind(this)}>&#x25B2;&#x25BC;</button></th>
-                            <th>Name <button type="button" name="name" onClick={this.onSortButtonClickHandler.bind(this)}>&#x25B2;&#x25BC;</button></th>
-                            <th>Number <button type="button" name="number" onClick={this.onSortButtonClickHandler.bind(this)}>&#x25B2;&#x25BC;</button></th>
-                            <th>Class <button type="button" name="class" onClick={this.onSortButtonClickHandler.bind(this)}>&#x25B2;&#x25BC;</button></th>
+                        <tr class="border-b border-sky-800">
+                            <th class="py-2"># <button type="button" name="ordinal" onClick={this.onSortButtonClickHandler.bind(this)}>&#x25B2;&#x25BC;</button></th>
+                            <th class="py-2">Name <button type="button" name="name" onClick={this.onSortButtonClickHandler.bind(this)}>&#x25B2;&#x25BC;</button></th>
+                            <th class="py-2">Number <button type="button" name="number" onClick={this.onSortButtonClickHandler.bind(this)}>&#x25B2;&#x25BC;</button></th>
+                            <th class="py-2">Class <button type="button" name="class" onClick={this.onSortButtonClickHandler.bind(this)}>&#x25B2;&#x25BC;</button></th>
                             {raceTableHeaders}
-                            <th>
+                            <th class="py-2">
                                 Total
                                 &nbsp;
                                 <button type="button" name="timeTotal" onClick={this.onSortButtonClickHandler.bind(this)}>&#x25B2;&#x25BC;</button>
                             </th>
-                            <th>Completed</th>
+                            <th class="py-2">Finished</th>
                         </tr>
                     </thead>
                     <tbody>
