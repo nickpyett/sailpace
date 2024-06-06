@@ -11,6 +11,10 @@
         @apply bg-sky-800 text-white px-2 py-1 rounded inline-block hover:bg-sky-700 cursor-pointer;
     }
 
+    .cta-small {
+        @apply bg-sky-800 text-white text-sm px-1 rounded inline-block hover:bg-sky-700 cursor-pointer align-middle;
+    }
+
     .cta-link {
         @apply text-sky-800 hover:text-sky-700 cursor-pointer underline disabled:text-gray-500 disabled:cursor-not-allowed;
     }

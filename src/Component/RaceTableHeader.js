@@ -15,7 +15,7 @@ class RaceTableHeader extends Component {
                 Lap {this.props.lap.number}
                 &nbsp;
                 <button type="button" onClick={this.onSortButtonClickHandler.bind(this)}>&#x25B2;&#x25BC;</button>
-                <button type="button" disabled={this.props.disabled} onClick={this.onRemoveLapClickHandler.bind(this)}>x</button>
+                <button type="button" disabled={this.props.disabled} onClick={this.onRemoveLapClickHandler.bind(this)} className="ml-2 cta-small font-normal">x</button>
             </th>
         );
     }

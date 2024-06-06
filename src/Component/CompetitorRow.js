@@ -29,7 +29,7 @@ class CompetitorRow extends Component {
 
         return (
             <tr className="border-b border-gray-300">
-                <td className="p-2 w-14 text-center">{this.props.competitor.ordinal} <button type="button" onClick={this.onRemoveCompetitorClickHandler.bind(this)}>x</button></td>
+                <td className="p-2 w-14 text-center">{this.props.competitor.ordinal} <button type="button" onClick={this.onRemoveCompetitorClickHandler.bind(this)} className="cta-small ml-2">x</button></td>
                 <td className="p-2 w-36"><input type="text" name="name" value={this.props.competitor.name} onChange={this.onCompetitorChangeHandler.bind(this)} className="w-32" /></td>
                 <td className="p-2 w-36"><input type="text" name="number" value={this.props.competitor.number} onChange={this.onCompetitorChangeHandler.bind(this)} className="w-32" /></td>
                 <td className="p-2 w-36"><input type="text" name="class" value={this.props.competitor.class} onChange={this.onCompetitorChangeHandler.bind(this)} className="w-32" /></td>
