@@ -29,13 +29,13 @@ class CompetitorRow extends Component {
 
         return (
             <tr class="border-b border-gray-300">
-                <td class="py-2">{this.props.competitor.ordinal} <button type="button" onClick={this.onRemoveCompetitorClickHandler.bind(this)}>x</button></td>
-                <td class="py-2"><input type="text" name="name" value={this.props.competitor.name} onChange={this.onCompetitorChangeHandler.bind(this)} /></td>
-                <td class="py-2"><input type="text" name="number" value={this.props.competitor.number} onChange={this.onCompetitorChangeHandler.bind(this)} /></td>
-                <td class="py-2"><input type="text" name="class" value={this.props.competitor.class} onChange={this.onCompetitorChangeHandler.bind(this)} /></td>
+                <td class="p-2 text-center">{this.props.competitor.ordinal} <button type="button" onClick={this.onRemoveCompetitorClickHandler.bind(this)}>x</button></td>
+                <td class="p-2"><input type="text" name="name" value={this.props.competitor.name} onChange={this.onCompetitorChangeHandler.bind(this)} class="w-32" /></td>
+                <td class="p-2"><input type="text" name="number" value={this.props.competitor.number} onChange={this.onCompetitorChangeHandler.bind(this)} class="w-32" /></td>
+                <td class="p-2"><input type="text" name="class" value={this.props.competitor.class} onChange={this.onCompetitorChangeHandler.bind(this)} class="w-32" /></td>
                 {competitorLaps}
-                <td class="py-2">{this.props.competitor.timeTotal}</td>
-                <td  class="py-2 text-center">{completed}</td>
+                <td class="p-2 text-center">{this.props.competitor.timeTotal}</td>
+                <td  class="p-2 text-center">{completed}</td>
             </tr>
         );
     }

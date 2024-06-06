@@ -11,7 +11,7 @@ class RaceTableHeader extends Component {
 
     render() {
         return (
-            <th class="py-2">
+            <th class="p-2 w-48">
                 Lap {this.props.lap.number}
                 &nbsp;
                 <button type="button" onClick={this.onSortButtonClickHandler.bind(this)}>&#x25B2;&#x25BC;</button>

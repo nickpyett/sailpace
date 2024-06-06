@@ -61,21 +61,21 @@ class RaceTable extends Component {
         });
 
         return (
-            <form class="my-2 table-auto">
-                <table>
+            <form class="my-2 overflow-x-scroll">
+                <table class="table-fixed">
                     <thead>
-                        <tr class="border-b border-sky-800">
-                            <th class="py-2"># <button type="button" name="ordinal" onClick={this.onSortButtonClickHandler.bind(this)}>&#x25B2;&#x25BC;</button></th>
-                            <th class="py-2">Name <button type="button" name="name" onClick={this.onSortButtonClickHandler.bind(this)}>&#x25B2;&#x25BC;</button></th>
-                            <th class="py-2">Number <button type="button" name="number" onClick={this.onSortButtonClickHandler.bind(this)}>&#x25B2;&#x25BC;</button></th>
-                            <th class="py-2">Class <button type="button" name="class" onClick={this.onSortButtonClickHandler.bind(this)}>&#x25B2;&#x25BC;</button></th>
+                        <tr class="border-b border-sky-600">
+                            <th class="p-2 w-11"># <button type="button" name="ordinal" onClick={this.onSortButtonClickHandler.bind(this)}>&#x25B2;&#x25BC;</button></th>
+                            <th class="p-2 w-36">Name <button type="button" name="name" onClick={this.onSortButtonClickHandler.bind(this)}>&#x25B2;&#x25BC;</button></th>
+                            <th class="p-2 w-36">Number <button type="button" name="number" onClick={this.onSortButtonClickHandler.bind(this)}>&#x25B2;&#x25BC;</button></th>
+                            <th class="p-2 w-36">Class <button type="button" name="class" onClick={this.onSortButtonClickHandler.bind(this)}>&#x25B2;&#x25BC;</button></th>
                             {raceTableHeaders}
-                            <th class="py-2">
+                            <th class="p-2 w-36">
                                 Total
                                 &nbsp;
                                 <button type="button" name="timeTotal" onClick={this.onSortButtonClickHandler.bind(this)}>&#x25B2;&#x25BC;</button>
                             </th>
-                            <th class="py-2">Finished</th>
+                            <th class="p-2 w-36">Finished</th>
                         </tr>
                     </thead>
                     <tbody>
