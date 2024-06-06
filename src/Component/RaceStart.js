@@ -25,7 +25,9 @@ class RaceStart extends Component {
         const disabled = this.props.startDateTime !== null;
 
         return (
-            <button disabled={disabled} onClick={this.onRaceStartClickHandler.bind(this)} className="cta mr-2 disabled:bg-gray-500">Start Race</button>
+            <>
+                <span className="rounded bg-emerald-600 h-3 w-3 inline-block"></span> <button disabled={disabled} onClick={this.onRaceStartClickHandler.bind(this)} className="cta-link mr-3">Start Race</button>
+            </>
         );
     }
 }
