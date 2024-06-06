@@ -354,7 +354,7 @@ class Race extends Component {
 
                 <div class="my-2">
                     <span class="inline-block bg-purple-700 px-2 text-white text-sm font-bold rounded-l leading-6 align-middle">Timer</span>
-                    <span class="inline-block bg-gray-200 px-2 rounded-r leading-6 align-middle">{this.state.raceTime ? this.state.raceTime : '-'}</span>
+                    <span class="inline-block bg-gray-200 px-2 rounded-r leading-6 align-middle min-w-24 text-center font-mono">{this.state.raceTime ? this.state.raceTime : '-'}</span>
                 </div>
 
                 <RaceTable
