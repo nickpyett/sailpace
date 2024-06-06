@@ -65,7 +65,7 @@ class RaceTable extends Component {
                 <table className="table-fixed w-max">
                     <thead>
                         <tr className="border-b border-sky-600">
-                            <th className="p-2 w-11"># <button type="button" name="ordinal" onClick={this.onSortButtonClickHandler.bind(this)}>&#x25B2;&#x25BC;</button></th>
+                            <th className="p-2 w-14"># <button type="button" name="ordinal" onClick={this.onSortButtonClickHandler.bind(this)}>&#x25B2;&#x25BC;</button></th>
                             <th className="p-2 w-36">Name <button type="button" name="name" onClick={this.onSortButtonClickHandler.bind(this)}>&#x25B2;&#x25BC;</button></th>
                             <th className="p-2 w-36">Number <button type="button" name="number" onClick={this.onSortButtonClickHandler.bind(this)}>&#x25B2;&#x25BC;</button></th>
                             <th className="p-2 w-36">Class <button type="button" name="class" onClick={this.onSortButtonClickHandler.bind(this)}>&#x25B2;&#x25BC;</button></th>
