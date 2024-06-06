@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { Link } from 'react-router-dom';
 import RaceEntity from 'Entity/RaceEntity';
 
@@ -27,7 +27,7 @@ class RaceList extends Component {
                 </ul>
 
                 <div>
-                    <Link to={'/race/' + race.id} class="cta">+ New Race</Link>
+                    <Link to={'/race/' + race.id}>+ New Race</Link>
                 </div>
             </div>
         );

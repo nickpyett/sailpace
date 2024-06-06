@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import DisplayTimeEntity from 'Entity/DisplayTimeEntity';
 
 class CompetitorLap extends Component {

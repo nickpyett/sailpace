@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import DisplayTimeEntity from 'Entity/DisplayTimeEntity';
 import CompetitorEntity from 'Entity/CompetitorEntity';
 import CompetitorLapEntity from 'Entity/CompetitorLapEntity';

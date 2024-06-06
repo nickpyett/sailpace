@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import CompetitorRow from 'Component/CompetitorRow';
 import RaceTableHeader from 'Component/RaceTableHeader';
 
