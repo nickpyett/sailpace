@@ -34,6 +34,8 @@ class Race extends Component {
     componentDidMount() {
         if (this.state.startDateTime && ! this.state.endDateTime) {
             this.setRaceTimeUpdateInterval();
+        } else if (this.state.startDateTime && this.state.endDateTime) {
+            this.setEndedRaceTime();
         }
     }
 
@@ -229,7 +231,20 @@ class Race extends Component {
         const displayTimeEntity = DisplayTimeEntity.fromMilliseconds(differenceInMilliseconds);
 
         this.setState({
-            raceTime: displayTimeEntity.getInTimeFormat()
+            raceTime: displayTimeEntity.getInTimeFormat(),
+        });
+    }
+
+    setEndedRaceTime() {
+        const startDateTime = new Date(this.state.startDateTime);
+        const endDateTime = new Date(this.state.endDateTime);
+
+        const differenceInMilliseconds = endDateTime - startDateTime;
+
+        const displayTimeEntity = DisplayTimeEntity.fromMilliseconds(differenceInMilliseconds);
+
+        this.setState({
+            raceTime: displayTimeEntity.getInTimeFormat(),
         });
     }
 
@@ -238,16 +253,20 @@ class Race extends Component {
 
         this.setAndPersistState({
             startDateTime: startDateTime
+        }).then(() => {
+            this.setRaceTimeUpdateInterval();
         });
-
-        this.setRaceTimeUpdateInterval();
     }
 
     setEndDateTimeHandler() {
+        clearInterval(this.raceTimeUpdateInterval);
+
         const now = new Date().toUTCString();
 
         this.setAndPersistState({
             endDateTime: now,
+        }).then(() => {
+            this.setEndedRaceTime();
         });
     }
 
