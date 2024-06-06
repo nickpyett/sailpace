@@ -353,8 +353,8 @@ class Race extends Component {
                 <RaceTitle title={this.state.title} onRaceTitleChangeHandler={this.onRaceTitleChangeHandler.bind(this)} />
 
                 <div class="my-2">
-                    <span class="inline-block bg-purple-700 px-2 text-white text-sm font-bold rounded-l leading-6">Timer</span>
-                    <span class="inline-block bg-gray-200 px-2 rounded-r">{this.state.raceTime ? this.state.raceTime : '-'}</span>
+                    <span class="inline-block bg-purple-700 px-2 text-white text-sm font-bold rounded-l leading-6 align-middle">Timer</span>
+                    <span class="inline-block bg-gray-200 px-2 rounded-r leading-6 align-middle">{this.state.raceTime ? this.state.raceTime : '-'}</span>
                 </div>
 
                 <RaceTable
