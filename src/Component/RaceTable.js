@@ -62,7 +62,7 @@ class RaceTable extends Component {
 
         return (
             <form className="my-2 overflow-x-scroll">
-                <table className="table-fixed">
+                <table className="table-fixed w-max">
                     <thead>
                         <tr className="border-b border-sky-600">
                             <th className="p-2 w-11"># <button type="button" name="ordinal" onClick={this.onSortButtonClickHandler.bind(this)}>&#x25B2;&#x25BC;</button></th>
