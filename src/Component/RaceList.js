@@ -16,7 +16,7 @@ class RaceList extends Component {
             </li>;
         });
 
-        const race = new RaceEntity(null);
+        const race = new RaceEntity(null, null);
 
         return (
             <div>

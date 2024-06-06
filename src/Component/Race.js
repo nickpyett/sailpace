@@ -21,7 +21,7 @@ class Race extends Component {
         this.id = pathArray[2];
 
         const competitorSort = new CompetitorSortEntity();
-        const race = new RaceEntity(competitorSort);
+        const race = new RaceEntity(this.id, competitorSort);
         const localState = this.getPersistedState();
 
         const state = Object.assign({}, race, localState);
