@@ -28,14 +28,14 @@ class CompetitorRow extends Component {
         const completed = raceCompleted ? String.fromCharCode('10004') : '-';
 
         return (
-            <tr class="border-b border-gray-300">
-                <td class="p-2 text-center">{this.props.competitor.ordinal} <button type="button" onClick={this.onRemoveCompetitorClickHandler.bind(this)}>x</button></td>
-                <td class="p-2"><input type="text" name="name" value={this.props.competitor.name} onChange={this.onCompetitorChangeHandler.bind(this)} class="w-32" /></td>
-                <td class="p-2"><input type="text" name="number" value={this.props.competitor.number} onChange={this.onCompetitorChangeHandler.bind(this)} class="w-32" /></td>
-                <td class="p-2"><input type="text" name="class" value={this.props.competitor.class} onChange={this.onCompetitorChangeHandler.bind(this)} class="w-32" /></td>
+            <tr className="border-b border-gray-300">
+                <td className="p-2 text-center">{this.props.competitor.ordinal} <button type="button" onClick={this.onRemoveCompetitorClickHandler.bind(this)}>x</button></td>
+                <td className="p-2"><input type="text" name="name" value={this.props.competitor.name} onChange={this.onCompetitorChangeHandler.bind(this)} className="w-32" /></td>
+                <td className="p-2"><input type="text" name="number" value={this.props.competitor.number} onChange={this.onCompetitorChangeHandler.bind(this)} className="w-32" /></td>
+                <td className="p-2"><input type="text" name="class" value={this.props.competitor.class} onChange={this.onCompetitorChangeHandler.bind(this)} className="w-32" /></td>
                 {competitorLaps}
-                <td class="p-2 text-center font-mono">{this.props.competitor.timeTotal}</td>
-                <td class="p-2 text-center">{completed}</td>
+                <td className="p-2 text-center font-mono">{this.props.competitor.timeTotal}</td>
+                <td className="p-2 text-center">{completed}</td>
             </tr>
         );
     }

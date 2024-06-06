@@ -7,11 +7,11 @@ class RaceList extends Component {
         const races = JSON.parse(localStorage.getItem('races')) || [];
 
         const links = races.map(race => {
-            return <li key={race.id} class="my-2">
+            return <li key={race.id} className="my-2">
                 <Link to={'/race/' + race.id}>
-                    {race.title ? <strong class="mr-3">{race.title}</strong> : ''}
-                    <span class="uppercase text-xs mr-3">{race.dateTimeCreated}</span>
-                    {race.endDateTime ? <span class="bg-sky-800 text-white text-xs inline p-1 px-2 rounded-full">finished</span> : ''}
+                    {race.title ? <strong className="mr-3">{race.title}</strong> : ''}
+                    <span className="uppercase text-xs mr-3">{race.dateTimeCreated}</span>
+                    {race.endDateTime ? <span className="bg-sky-800 text-white text-xs inline p-1 px-2 rounded-full">finished</span> : ''}
                 </Link>
             </li>;
         });
@@ -20,9 +20,9 @@ class RaceList extends Component {
 
         return (
             <div>
-                <h1 class="page-header">Race List</h1>
+                <h1 className="page-header">Race List</h1>
 
-                <ul class="my-4">
+                <ul className="my-4">
                     {links}
                 </ul>
 

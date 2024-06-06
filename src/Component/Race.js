@@ -367,18 +367,18 @@ class Race extends Component {
     render() {
         return (
             <div className="race">
-                <h1 class="page-header">Race</h1>
+                <h1 className="page-header">Race</h1>
 
                 <RaceTitle title={this.state.title} onRaceTitleChangeHandler={this.onRaceTitleChangeHandler.bind(this)} />
 
-                <div class="my-2">
-                    <span class="inline-block bg-purple-700 px-2 text-white text-sm font-bold rounded-l leading-6 align-middle">Timer</span>
-                    <span class="inline-block bg-gray-200 px-2 rounded-r leading-6 align-middle min-w-24 text-center font-mono">{this.state.raceTime ? this.state.raceTime : '-'}</span>
+                <div className="my-2">
+                    <span className="inline-block bg-purple-700 px-2 text-white text-sm font-bold rounded-l leading-6 align-middle">Timer</span>
+                    <span className="inline-block bg-gray-200 px-2 rounded-r leading-6 align-middle min-w-24 text-center font-mono">{this.state.raceTime ? this.state.raceTime : '-'}</span>
                 </div>
 
-                <div class="my-2">
-                    <button type="button" onClick={this.onAddCompetitorHandler.bind(this)} class="cta mr-2">+ Add Competitor</button>
-                    <button type="button" onClick={this.onAddLapHandler.bind(this)}  class="cta">+ Add Lap</button>
+                <div className="my-2">
+                    <button type="button" onClick={this.onAddCompetitorHandler.bind(this)} className="cta mr-2">+ Add Competitor</button>
+                    <button type="button" onClick={this.onAddLapHandler.bind(this)}  className="cta">+ Add Lap</button>
                 </div>
 
                 <RaceTable
@@ -393,7 +393,7 @@ class Race extends Component {
                     onRemoveCompetitorClickHandler={this.onRemoveCompetitorClickHandler.bind(this)}
                 />
 
-                <div class="my-2">
+                <div className="my-2">
                     <RaceStart startDateTime={this.state.startDateTime} setStartDateTimeHandler={this.setStartDateTimeHandler.bind(this)} />
                     <RaceEnd startDateTime={this.state.startDateTime} endDateTime={this.state.endDateTime} setEndDateTimeHandler={this.setEndDateTimeHandler.bind(this)} />
                 </div>
