@@ -55,7 +55,7 @@ class RaceTable extends Component {
                 key={lap.id}
                 lap={lap}
                 disabled={disabled}
-                onRemoveLapClickHanlder={this.props.onRemoveLapClickHanlder}
+                onRemoveLapClickHandler={this.props.onRemoveLapClickHandler}
                 onSortButtonClickHandler={this.props.onSortButtonClickHandler}
             />
         });

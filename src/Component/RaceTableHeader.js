@@ -1,8 +1,8 @@
 import { Component } from 'react';
 
 class RaceTableHeader extends Component {
-    onRemoveLapClickHanlder() {
-        this.props.onRemoveLapClickHanlder(this.props.lap);
+    onRemoveLapClickHandler() {
+        this.props.onRemoveLapClickHandler(this.props.lap);
     }
 
     onSortButtonClickHandler() {
@@ -15,7 +15,7 @@ class RaceTableHeader extends Component {
                 Lap {this.props.lap.number}
                 &nbsp;
                 <button type="button" onClick={this.onSortButtonClickHandler.bind(this)}>&#x25B2;&#x25BC;</button>
-                <button type="button" disabled={this.props.disabled} onClick={this.onRemoveLapClickHanlder.bind(this)}>x</button>
+                <button type="button" disabled={this.props.disabled} onClick={this.onRemoveLapClickHandler.bind(this)}>x</button>
             </th>
         );
     }
