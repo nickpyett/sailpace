@@ -27,7 +27,7 @@ class RaceList extends Component {
                 </ul>
 
                 <div>
-                    <Link to={'/race/' + race.id}>+ New Race</Link>
+                    <Link to={'/race/' + race.id} className="cta">+ New Race</Link>
                 </div>
             </div>
         );
