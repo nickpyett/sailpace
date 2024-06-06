@@ -377,8 +377,8 @@ class Race extends Component {
                 </div>
 
                 <div class="my-2">
-                    <button type="button" onClick={this.onAddCompetitorHandler.bind(this)} class="cta mr-2">Add Competitor</button>
-                    <button type="button" onClick={this.onAddLapHandler.bind(this)}  class="cta">Add Lap</button>
+                    <button type="button" onClick={this.onAddCompetitorHandler.bind(this)} class="cta mr-2">+ Add Competitor</button>
+                    <button type="button" onClick={this.onAddLapHandler.bind(this)}  class="cta">+ Add Lap</button>
                 </div>
 
                 <RaceTable
