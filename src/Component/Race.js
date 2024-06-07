@@ -385,7 +385,7 @@ class Race extends Component {
 
     render() {
         return (
-            <div className="race">
+            <div>
                 <h1 className="page-header">Race</h1>
 
                 <RaceTitle title={this.state.title} onRaceTitleChangeHandler={this.onRaceTitleChangeHandler.bind(this)} />
