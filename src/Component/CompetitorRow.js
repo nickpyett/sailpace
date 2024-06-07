@@ -18,7 +18,14 @@ class CompetitorRow extends Component {
                 raceCompleted = false;
             }
 
-            return <CompetitorLap key={lap.id} lap={lap} competitor={this.props.competitor} startDateTime={this.props.startDateTime} onCompetitorLapChange={this.props.onCompetitorLapChange} />;
+            return <CompetitorLap
+                key={lap.id}
+                lap={lap}
+                competitor={this.props.competitor}
+                startDateTime={this.props.startDateTime}
+                onCompetitorLapChange={this.props.onCompetitorLapChange}
+                onCompetitorLapSet={this.props.onCompetitorLapSet}
+            />;
         });
 
         if (0 === this.props.competitor.laps.length) {

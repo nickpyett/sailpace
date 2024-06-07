@@ -218,6 +218,25 @@ class Race extends Component {
         });
     }
 
+    onCompetitorLapSet(competitor, competitorLap) {
+        const dateRaceStarted = new Date(this.state.startDateTime);
+        const dateNow = new Date();
+
+        const timeMs = competitor.timeTotal.split('.');
+        const hhMmSs = timeMs[0].split(':');
+
+        const previousLapTimesInMs = Number(hhMmSs[0]) * 3600000
+            + Number(hhMmSs[1]) * 60000
+            + Number(hhMmSs[2]) * 1000
+            + Number(timeMs[1]);
+
+        const differenceInMs = dateNow - dateRaceStarted - previousLapTimesInMs;
+
+        const lapDateTimeString = DisplayTimeEntity.fromMilliseconds(differenceInMs);
+
+        this.onCompetitorLapChange(competitor, competitorLap, lapDateTimeString.getInDisplayFormat());
+    }
+
     setRaceTimeUpdateInterval() {
         this.raceTimeUpdateInterval = setInterval(this.raceTimeUpdate.bind(this), 100);
     }
@@ -389,6 +408,7 @@ class Race extends Component {
                     onCompetitorChangeHandler={this.onCompetitorChangeHandler.bind(this)}
                     onSortButtonClickHandler={this.onSortButtonClickHandler.bind(this)}
                     onCompetitorLapChange={this.onCompetitorLapChange.bind(this)}
+                    onCompetitorLapSet={this.onCompetitorLapSet.bind(this)}
                     onRemoveLapClickHandler={this.onRemoveLapClickHandler.bind(this)}
                     onRemoveCompetitorClickHandler={this.onRemoveCompetitorClickHandler.bind(this)}
                 />

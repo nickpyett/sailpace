@@ -44,6 +44,7 @@ class RaceTable extends Component {
                 startDateTime={this.props.startDateTime}
                 onCompetitorChangeHandler={this.props.onCompetitorChangeHandler}
                 onCompetitorLapChange={this.props.onCompetitorLapChange}
+                onCompetitorLapSet={this.props.onCompetitorLapSet}
                 onRemoveCompetitorClickHandler={this.props.onRemoveCompetitorClickHandler}
             />;
         });

@@ -1,20 +1,12 @@
 import { Component } from 'react';
-import DisplayTimeEntity from 'Entity/DisplayTimeEntity';
 
 class CompetitorLap extends Component {
     onCompetitorLapChange(e) {
         this.props.onCompetitorLapChange(this.props.competitor, this.props.lap, e.target.value);
     }
 
-    onCompetitorLapSetClick(e) {
-        const dateNow = new Date();
-        const dateRaceStarted = new Date(this.props.startDateTime);
-
-        const differenceInMilliseconds = dateNow - dateRaceStarted;
-
-        const displayTime = DisplayTimeEntity.fromMilliseconds(differenceInMilliseconds);
-
-        this.props.onCompetitorLapChange(this.props.competitor, this.props.lap, displayTime.getInDisplayFormat());
+    onCompetitorLapSetClick() {
+        this.props.onCompetitorLapSet(this.props.competitor, this.props.lap);
     }
 
     render() {
