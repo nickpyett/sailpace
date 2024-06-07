@@ -29,9 +29,15 @@ class RaceList extends Component {
             <div>
                 <h1 className="page-header">Race List</h1>
 
-                <ul className="my-4">
-                    {links}
-                </ul>
+                {links.length > 0 &&
+                    <ul className="my-4">
+                        {links}
+                    </ul>
+                }
+
+                {links.length === 0 &&
+                    <div class="my-4">You have no races. Start racing with the button below!</div>
+                }
 
                 <div>
                     <Link to={'/race/' + race.id} className="cta">+ New Race</Link>
