@@ -2,13 +2,17 @@
   "name": "sailpace",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://nickpyett.github.io/sailpace",
   "dependencies": {
+    "gh-pages": "^6.1.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.23.1",
     "react-scripts": "^5.0.1"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start && npm run start:css",
     "start:css": "tailwind -i ./src/index.src.css -o ./src/index.css --watch",
     "build": "react-scripts build && npm run build:css",
