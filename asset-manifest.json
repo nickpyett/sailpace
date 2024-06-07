@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/sailpace/static/css/main.42524182.css",
+    "main.js": "/sailpace/static/js/main.bac1a8f1.js",
+    "index.html": "/sailpace/index.html",
+    "main.42524182.css.map": "/sailpace/static/css/main.42524182.css.map",
+    "main.bac1a8f1.js.map": "/sailpace/static/js/main.bac1a8f1.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.42524182.css",
+    "static/js/main.bac1a8f1.js"
+  ]
+}
