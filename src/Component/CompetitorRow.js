@@ -12,20 +12,26 @@ class CompetitorRow extends Component {
 
     render() {
         let raceCompleted = true;
+        let previousLapHasTime = true;
 
         const competitorLaps = this.props.competitor.laps.map(lap => {
             if (lap.time === '') {
                 raceCompleted = false;
             }
 
-            return <CompetitorLap
+            const competitorLap = <CompetitorLap
                 key={lap.id}
                 lap={lap}
                 competitor={this.props.competitor}
                 startDateTime={this.props.startDateTime}
                 onCompetitorLapChange={this.props.onCompetitorLapChange}
                 onCompetitorLapSet={this.props.onCompetitorLapSet}
+                isCurrentLap={previousLapHasTime}
             />;
+
+            previousLapHasTime = !! lap.time;
+
+            return competitorLap;
         });
 
         if (0 === this.props.competitor.laps.length) {
