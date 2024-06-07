@@ -9,7 +9,7 @@ class App extends Component {
             <Router>
                 <Header />
                 <Main />
-                <div className="m-4 py-4 border-t border-sky-600 text-sm">&copy; Nick Pyett 2024</div>
+                <div className="mx-4 py-4 border-t border-sky-600 text-sm">&copy; Nick Pyett 2024</div>
             </Router>
         );
     }

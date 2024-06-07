@@ -8,7 +8,7 @@ class Main extends Component {
     render() {
         return (
             <>
-                <div className="p-4">
+                <div className="p-4 flex-1">
                     <Routes>
                         <Route path="/" element={<RaceList />} />
                         <Route path="race" element={<RaceList />} />
