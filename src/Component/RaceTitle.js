@@ -7,8 +7,8 @@ class RaceTitle extends Component {
 
     render() {
         return (
-            <div className="my-2">
-                <label htmlFor="race-title">Name:</label> <input type="text" id="race-title" value={this.props.title} onChange={this.onRaceTitleChangeHandler.bind(this)} />
+            <div className="my-4">
+                <label htmlFor="race-title">Name:</label> <input type="text" id="race-title" value={this.props.title} onChange={this.onRaceTitleChangeHandler.bind(this)} className="border border-gray-300 px-1" />
             </div>
         );
     }
