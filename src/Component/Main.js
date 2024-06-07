@@ -8,7 +8,7 @@ class Main extends Component {
     render() {
         return (
             <>
-                <div className="p-3">
+                <div className="p-4">
                     <Routes>
                         <Route path="/" element={<RaceList />} />
                         <Route path="race" element={<RaceList />} />
@@ -16,7 +16,7 @@ class Main extends Component {
                         <Route path="race/:id" element={<Race />} />
                     </Routes>
                 </div>
-                <div className="m-3 py-3 border-t border-sky-600 text-sm">&copy; Nick Pyett 2024</div>
+                <div className="m-4 py-4 border-t border-sky-600 text-sm">&copy; Nick Pyett 2024</div>
             </>
         );
     }
