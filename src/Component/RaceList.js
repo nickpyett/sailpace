@@ -6,7 +6,14 @@ class RaceList extends Component {
     render() {
         const races = JSON.parse(localStorage.getItem('races')) || [];
 
-        const links = races.map(race => {
+        const racesSorted = races.sort((a, b) => {
+            const aDate = new Date(a.dateTimeCreated);
+            const bDate = new Date(b.dateTimeCreated);
+
+            return aDate < bDate;
+        });
+
+        const links = racesSorted.map(race => {
             return <li key={race.id} className="my-2">
                 <Link to={'/race/' + race.id}>
                     {race.title ? <strong className="mr-3">{race.title}</strong> : ''}
