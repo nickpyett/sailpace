@@ -7,10 +7,9 @@ class App extends Component {
     render() {
         return (
             <Router>
-                <div>
-                    <Header />
-                    <Main />
-                </div>
+                <Header />
+                <Main />
+                <div className="m-4 py-4 border-t border-sky-600 text-sm">&copy; Nick Pyett 2024</div>
             </Router>
         );
     }

@@ -16,7 +16,6 @@ class Main extends Component {
                         <Route path="race/:id" element={<Race />} />
                     </Routes>
                 </div>
-                <div className="m-4 py-4 border-t border-sky-600 text-sm">&copy; Nick Pyett 2024</div>
             </>
         );
     }
