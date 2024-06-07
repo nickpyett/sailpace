@@ -390,12 +390,12 @@ class Race extends Component {
 
                 <RaceTitle title={this.state.title} onRaceTitleChangeHandler={this.onRaceTitleChangeHandler.bind(this)} />
 
-                <div className="my-2">
+                <div className="my-4">
                     <span className="inline-block bg-purple-700 px-2 text-white text-sm font-bold rounded-l leading-6 align-middle">Timer</span>
                     <span className="inline-block bg-gray-200 px-2 rounded-r leading-6 align-middle min-w-24 text-center font-mono">{this.state.raceTime ? this.state.raceTime : '-'}</span>
                 </div>
 
-                <div className="my-2">
+                <div className="my-4">
                     <button type="button" onClick={this.onAddCompetitorHandler.bind(this)} className="cta mr-2">+ Add Competitor</button>
                     <button type="button" onClick={this.onAddLapHandler.bind(this)}  className="cta">+ Add Lap</button>
                 </div>
@@ -413,7 +413,7 @@ class Race extends Component {
                     onRemoveCompetitorClickHandler={this.onRemoveCompetitorClickHandler.bind(this)}
                 />
 
-                <div className="my-2">
+                <div className="my-4">
                     <RaceStart startDateTime={this.state.startDateTime} setStartDateTimeHandler={this.setStartDateTimeHandler.bind(this)} />
                     <RaceEnd startDateTime={this.state.startDateTime} endDateTime={this.state.endDateTime} setEndDateTimeHandler={this.setEndDateTimeHandler.bind(this)} />
                 </div>
