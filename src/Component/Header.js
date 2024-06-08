@@ -10,7 +10,7 @@ class Header extends Component {
 
                 <nav>
                     <ul>
-                        <li className="inline mr-3"><Link to="/race">Race List</Link></li>
+                        <li className="inline mr-3"><Link to="/race-list">Race List</Link></li>
                         <li className="inline"><Link to="/about">About</Link></li>
                     </ul>
                 </nav>
