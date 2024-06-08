@@ -399,6 +399,9 @@ class Race extends Component {
                 <div className="my-4">
                     <span className="inline-block bg-purple-700 px-2 text-white text-sm font-bold rounded-l leading-6 align-middle">Timer</span>
                     <span className="inline-block bg-gray-200 px-2 rounded-r leading-6 align-middle min-w-24 text-center font-mono">{this.state.raceTime ? this.state.raceTime : '-'}</span>
+                    {this.state.endDateTime &&
+                        <span className="ml-3 text-purple-700">{String.fromCharCode('9873')} Race Finished</span>
+                    }
                 </div>
 
                 <div className="my-4">
