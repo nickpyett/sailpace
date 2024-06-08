@@ -1,8 +1,8 @@
 Sailpace
 ========
 
-An app to create a web-based sailing time sheet in React.
+An app to create a web-based sailing timesheet in React. Try it for youself at [nickpyett.github.io/sailpace](https://nickpyett.github.io/sailpace/).
 
-This was created with Create React App and uses Tailwindcss for styling.
+Sailpace was created with Create React App and uses Tailwindcss for styling.
 
 &copy; Nick Pyett 2024
