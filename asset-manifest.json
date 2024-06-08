@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/sailpace/static/css/main.4fe3e126.css",
-    "main.js": "/sailpace/static/js/main.f93de313.js",
+    "main.css": "/sailpace/static/css/main.43790431.css",
+    "main.js": "/sailpace/static/js/main.5e41cf63.js",
     "index.html": "/sailpace/index.html",
-    "main.4fe3e126.css.map": "/sailpace/static/css/main.4fe3e126.css.map",
-    "main.f93de313.js.map": "/sailpace/static/js/main.f93de313.js.map"
+    "main.43790431.css.map": "/sailpace/static/css/main.43790431.css.map",
+    "main.5e41cf63.js.map": "/sailpace/static/js/main.5e41cf63.js.map"
   },
   "entrypoints": [
-    "static/css/main.4fe3e126.css",
-    "static/js/main.f93de313.js"
+    "static/css/main.43790431.css",
+    "static/js/main.5e41cf63.js"
   ]
 }
