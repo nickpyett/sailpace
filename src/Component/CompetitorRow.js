@@ -48,7 +48,7 @@ class CompetitorRow extends Component {
                 <td className="p-2 w-36"><input type="text" name="class" value={this.props.competitor.class} onChange={this.onCompetitorChangeHandler.bind(this)} className="w-32" /></td>
                 {competitorLaps}
                 <td className="p-2 w-36 text-center font-mono">{this.props.competitor.timeTotal}</td>
-                <td className="p-2 w-36 text-center">{completed}</td>
+                <td className="p-2 w-36 text-center font-serif">{completed}</td>
             </tr>
         );
     }
