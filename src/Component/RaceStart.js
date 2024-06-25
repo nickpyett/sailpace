@@ -24,10 +24,11 @@ class RaceStart extends Component {
     render() {
         const disabled = this.props.startDateTime !== null;
 
-        return (
-            <>
-                <span className="rounded bg-emerald-600 h-3 w-3 inline-block"></span> <button disabled={disabled} onClick={this.onRaceStartClickHandler.bind(this)} className="cta-link mr-3">Start Race</button>
-            </>
+        return (            
+            <button disabled={disabled} onClick={this.onRaceStartClickHandler.bind(this)} className="cta-link mr-3">
+                <span className="rounded bg-emerald-600 h-3 w-3 inline-block mr-1"></span> 
+                Start Race
+            </button>
         );
     }
 }

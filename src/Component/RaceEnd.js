@@ -17,9 +17,10 @@ class RaceEnd extends Component {
         const disabled = this.props.startDateTime === null || this.props.endDateTime !== null;
 
         return (
-            <>
-                <span className="rounded bg-red-600 h-3 w-3 inline-block"></span> <button disabled={disabled} onClick={this.onRaceEndClickHandler.bind(this)} className="cta-link">End Race</button>
-            </>
+            <button disabled={disabled} onClick={this.onRaceEndClickHandler.bind(this)} className="cta-link">
+                <span className="rounded bg-red-600 h-3 w-3 inline-block mr-1"></span>
+                End Race
+            </button>
         );
     }
 }
