@@ -1,8 +1,6 @@
-import { Component } from 'react';
-
-class RaceEnd extends Component {
-    onRaceEndClickHandler() {
-        if (this.props.endDateTime !== null) {
+export default function RaceEnd({ startDateTime, endDateTime, setEndDateTimeHandler }) {
+    function handleRaceEndClick() {
+        if (endDateTime !== null) {
             return;
         }
 
@@ -10,19 +8,15 @@ class RaceEnd extends Component {
             return;
         }
 
-        this.props.setEndDateTimeHandler();
+        setEndDateTimeHandler();
     }
 
-    render() {
-        const disabled = this.props.startDateTime === null || this.props.endDateTime !== null;
+    const disabled = startDateTime === null || endDateTime !== null;
 
-        return (
-            <button disabled={disabled} onClick={this.onRaceEndClickHandler.bind(this)} className="cta-link">
-                <span className="rounded bg-red-600 h-3 w-3 inline-block mr-1"></span>
-                End Race
-            </button>
-        );
-    }
+    return (
+        <button disabled={disabled} onClick={handleRaceEndClick} className="cta-link">
+            <span className="rounded bg-red-600 h-3 w-3 inline-block mr-1"></span>
+            End Race
+        </button>
+    );
 }
-
-export default RaceEnd;
