@@ -1,6 +1,6 @@
 export default function StoragePolicy() {
     return (
-        <>
+        <div>
             <h1 className="page-header">Storage Policy</h1>
 
             <table className="max-w-2xl">
@@ -21,6 +21,6 @@ export default function StoragePolicy() {
                     </tr>
                 </tbody>
             </table>
-        </>
+        </div>
     )
 }
