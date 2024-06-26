@@ -1,24 +1,18 @@
-import { Component } from 'react';
-
-class RaceTableHeader extends Component {
-    onRemoveLapClickHandler() {
-        this.props.onRemoveLapClickHandler(this.props.lap);
+export default function RaceTableHeader({ lap, disabled, onRemoveLapClickHandler, onSortButtonClickHandler }) {
+    function handleRemoveLapClick() {
+        onRemoveLapClickHandler(lap);
     }
 
-    onSortButtonClickHandler() {
-        this.props.onSortButtonClickHandler('lap', this.props.lap);
+    function handleSortButtonClick() {
+        onSortButtonClickHandler('lap', lap);
     }
 
-    render() {
-        return (
-            <th className="p-2 w-48">
-                Lap {this.props.lap.number}
-                &nbsp;
-                <button type="button" onClick={this.onSortButtonClickHandler.bind(this)} title="Sort">&#x25B2;&#x25BC;</button>
-                <button type="button" disabled={this.props.disabled} title={this.props.disabled ? 'Only the last lap may be deleted' : 'Delete this lap'} onClick={this.onRemoveLapClickHandler.bind(this)} className="ml-2 cta-small font-normal">x</button>
-            </th>
-        );
-    }
+    return (
+        <th className="p-2 w-48">
+            Lap {lap.number}
+            &nbsp;
+            <button type="button" onClick={handleSortButtonClick} title="Sort">&#x25B2;&#x25BC;</button>
+            <button type="button" disabled={disabled} title={disabled ? 'Only the last lap may be deleted' : 'Delete this lap'} onClick={handleRemoveLapClick} className="ml-2 cta-small font-normal">x</button>
+        </th>
+    );
 }
-
-export default RaceTableHeader;
