@@ -1,103 +1,87 @@
-import { Component } from 'react';
-import DisplayTimeEntity from 'Entity/DisplayTimeEntity';
+import { useEffect, useRef, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import CompetitorEntity from 'Entity/CompetitorEntity';
 import CompetitorLapEntity from 'Entity/CompetitorLapEntity';
 import CompetitorSortEntity from 'Entity/CompetitorSortEntity';
+import DisplayTimeEntity from 'Entity/DisplayTimeEntity';
+import RaceEnd from 'Component/RaceEnd';
 import RaceEntity from 'Entity/RaceEntity';
 import RaceLapEntity from 'Entity/RaceLapEntity';
-import RaceTitle from 'Component/RaceTitle';
-import RaceStart from 'Component/RaceStart';
 import RaceTable from 'Component/RaceTable';
-import RaceEnd from 'Component/RaceEnd';
+import RaceStart from 'Component/RaceStart';
+import RaceTitle from 'Component/RaceTitle';
 
-class Race extends Component {
-    constructor(props) {
-        super(props);
+export default function Race() {
+    let { raceId } = useParams();
 
-        // This ID should be set via React Router, but it doesn't work with 
-        // React Components, so this is a quick fix
-        if (window.location.hash) {
-            const hashArray = window.location.hash.split('/');
+    const [race, setRace] = useState(() => {
+        const raceEntity = new RaceEntity(raceId, new CompetitorSortEntity());
+        const localState = getPersistedRace();
 
-            this.id = hashArray[2];
-        } else {
-            const pathArray = window.location.pathname.split('/');
+        return Object.assign({}, raceEntity, localState);
+    });
 
-            this.id = pathArray[2];
+    const [raceTime, setRaceTime] = useState(0);
+    const raceTimeUpdateInterval = useRef(null);
+
+    useEffect(() => {
+        if (race.startDateTime && ! race.endDateTime) {
+            setRaceTimeUpdateInterval();
+        } else if (race.startDateTime && race.endDateTime) {
+            setEndedRaceTime();
         }
 
-        const competitorSort = new CompetitorSortEntity();
-        const race = new RaceEntity(this.id, competitorSort);
-        const localState = this.getPersistedState();
-
-        const state = Object.assign({}, race, localState);
-
-        this.state = state;
-        this.raceTime = 0;
-        this.raceTimeUpdateInterval = null;
-    }
-
-    componentDidMount() {
-        if (this.state.startDateTime && ! this.state.endDateTime) {
-            this.setRaceTimeUpdateInterval();
-        } else if (this.state.startDateTime && this.state.endDateTime) {
-            this.setEndedRaceTime();
+        return () => {
+            if (raceTimeUpdateInterval) {
+                clearInterval(raceTimeUpdateInterval);
+            }
         }
-    }
+    });
 
-    componentWillUnmount() {
-        if (this.raceTimeUpdateInterval) {
-            clearInterval(this.raceTimeUpdateInterval);
-        }
-    }
+    useEffect(() => {
+        persistRace();
+    }, [race]);
 
-    persistState() {
+    function persistRace() {
         const races = JSON.parse(localStorage.getItem('races')) || [];
-        const raceId = this.id;
+
         let raceExists = false;
 
-        const updatedRaces = races.map(race => {
-            if (race.id === raceId) {
+        const updatedRaces = races.map(raceItem => {
+            if (raceItem.id === raceId) {
                 raceExists = true;
 
-                return this.state;
+                return race;
             }
 
-            return race;
+            return raceItem;
         });
 
         if (! raceExists) {
-            this.id = this.state.id;
+            raceId = race.id;
             
-            updatedRaces.push(this.state);
+            updatedRaces.push(race);
         }
 
         localStorage.setItem('races', JSON.stringify(updatedRaces));
     }
 
-    getPersistedState() {
+    function getPersistedRace() {
         const races = JSON.parse(localStorage.getItem('races')) || [];
 
-        const raceId = this.id;
         const race = races.find(race => race.id === raceId);
 
         return race || {};
     }
 
-    setAndPersistState(object) {
-        const promise = new Promise((resolve, reject) => {
-            this.setState(object, () => {
-                this.persistState();
+    function mergeIntoRace(object) {
+        const updatedRace = Object.assign({}, race, object);
 
-                resolve();
-            });
-        });
-
-        return promise;
+        setRace(updatedRace);
     }
 
-    onCompetitorChangeHandler(competitor, key, value) {
-        const competitors = this.state.competitors.map(competitorRow => {
+    function onCompetitorChangeHandler(competitor, key, value) {
+        const competitors = race.competitors.map(competitorRow => {
             if (
                 competitor.id === competitorRow.id
                 && ['name', 'number', 'class'].includes(key)
@@ -108,19 +92,19 @@ class Race extends Component {
             return competitorRow;
         });
 
-        this.setAndPersistState({
-            competitors: competitors
+        mergeIntoRace({
+            competitors: competitors,
         });
     }
 
-    onAddCompetitorHandler() {
-        const competitorLaps = this.state.laps.map(lap => {
+    function onAddCompetitorHandler() {
+        const competitorLaps = race.laps.map(lap => {
             return new CompetitorLapEntity(lap);
         });
 
         let ordinal = 1;
 
-        this.state.competitors.forEach(competitor => {
+        race.competitors.forEach(competitor => {
             if (competitor.ordinal >= ordinal) {
                 ordinal = competitor.ordinal + 1;
             }
@@ -128,72 +112,72 @@ class Race extends Component {
 
         const competitor = new CompetitorEntity(ordinal, competitorLaps);
 
-        const competitors = this.state.competitors.concat(competitor);
+        const competitors = race.competitors.concat(competitor);
 
-        this.setAndPersistState({
-            competitors: competitors
+        mergeIntoRace({
+            competitors: competitors,
         });
     }
 
-    onAddLapHandler() {
-        const lapNumber = this.state.laps.length + 1;
+    function onAddLapHandler() {
+        const lapNumber = race.laps.length + 1;
 
         const newLap = new RaceLapEntity(lapNumber);
 
         const laps = [
-            ...this.state.laps,
-            newLap
+            ...race.laps,
+            newLap,
         ];
 
-        const competitors = this.state.competitors.map(competitorRow => {
+        const competitors = race.competitors.map(competitorRow => {
             const competitorLaps = [
                 ...competitorRow.laps,
-                new CompetitorLapEntity(newLap)
+                new CompetitorLapEntity(newLap),
             ];
 
             const competitor = {
                 ...competitorRow,
-                laps: competitorLaps
+                laps: competitorLaps,
             };
 
             return competitor;
         });
 
-        this.setAndPersistState({
+        mergeIntoRace({
             competitors: competitors,
-            laps: laps
+            laps: laps,
         });
     }
 
-    onRaceTitleChangeHandler(title) {
-        this.setAndPersistState({
-            title: title
+    function onRaceTitleChangeHandler(title) {
+        mergeIntoRace({
+            title: title,
         });
     }
 
-    onSortButtonClickHandler(orderBy, lap) {
+    function onSortButtonClickHandler(orderBy, lap) {
         const direction =
-            orderBy === this.state.competitorSort.orderBy && 'asc' === this.state.competitorSort.direction
+            orderBy === race.competitorSort.orderBy && 'asc' === race.competitorSort.direction
             ? 'desc'
             : 'asc';
 
         const competitorSort = {
             'orderBy': orderBy,
             'orderByLap': lap || null,
-            'direction': direction
+            'direction': direction,
         };
 
-        this.setAndPersistState({
-            competitorSort: competitorSort
+        mergeIntoRace({
+            competitorSort: competitorSort,
         });
     }
 
-    onCompetitorLapChange(competitor, lap, value) {
+    function onCompetitorLapChange(competitor, lap, value) {
         const updatedLaps = competitor.laps.map(lapRow => {
             if (lapRow.id === lap.id) {
                 return {
                     ...lapRow,
-                    time: value
+                    time: value,
                 };
             }
 
@@ -202,11 +186,11 @@ class Race extends Component {
 
         let updatedCompetitor = competitor;
 
-        const updatedCompetitors = this.state.competitors.map(competitorRow => {
+        const updatedCompetitors = race.competitors.map(competitorRow => {
             if (competitorRow.id === competitor.id) {
                 updatedCompetitor = {
                     ...competitorRow,
-                    laps: updatedLaps
+                    laps: updatedLaps,
                 };
 
                 return updatedCompetitor;
@@ -215,17 +199,15 @@ class Race extends Component {
             return competitorRow;
         });
 
-        const promise = this.setAndPersistState({
-            competitors: updatedCompetitors
-        });
+        const updatedCompetitorsWithTotals = calculateCompetitorTimeTotal(updatedCompetitors);
 
-        promise.then(() => {
-            this.calculateCompetitorTimeTotal([updatedCompetitor]);
-        });
+        mergeIntoRace({
+            competitors: updatedCompetitorsWithTotals,
+        })
     }
 
-    onCompetitorLapSet(competitor, competitorLap) {
-        const dateRaceStarted = new Date(this.state.startDateTime);
+    function onCompetitorLapSet(competitor, competitorLap) {
+        const dateRaceStarted = new Date(race.startDateTime);
         const dateNow = new Date();
 
         const timeMs = competitor.timeTotal.split('.');
@@ -240,63 +222,61 @@ class Race extends Component {
 
         const lapDateTimeString = DisplayTimeEntity.fromMilliseconds(differenceInMs);
 
-        this.onCompetitorLapChange(competitor, competitorLap, lapDateTimeString.getInDisplayFormat());
+        onCompetitorLapChange(competitor, competitorLap, lapDateTimeString.getInDisplayFormat());
     }
 
-    setRaceTimeUpdateInterval() {
-        this.raceTimeUpdateInterval = setInterval(this.raceTimeUpdate.bind(this), 100);
+    function setRaceTimeUpdateInterval() {
+        raceTimeUpdateInterval.current = setInterval(raceTimeUpdate, 100);
     }
 
-    raceTimeUpdate() {
+    function raceTimeUpdate() {
         const now = new Date();
-        const startDateTime = new Date(this.state.startDateTime);
+        const startDateTime = new Date(race.startDateTime);
 
         const differenceInMilliseconds = now - startDateTime;
 
         const displayTimeEntity = DisplayTimeEntity.fromMilliseconds(differenceInMilliseconds);
 
-        this.setState({
-            raceTime: displayTimeEntity.getInTimeFormat(),
-        });
+        setRaceTime(displayTimeEntity.getInTimeFormat());
     }
 
-    setEndedRaceTime() {
-        const startDateTime = new Date(this.state.startDateTime);
-        const endDateTime = new Date(this.state.endDateTime);
+    function setEndedRaceTime() {
+        const startDateTime = new Date(race.startDateTime);
+        const endDateTime = new Date(race.endDateTime);
 
         const differenceInMilliseconds = endDateTime - startDateTime;
 
         const displayTimeEntity = DisplayTimeEntity.fromMilliseconds(differenceInMilliseconds);
 
-        this.setState({
-            raceTime: displayTimeEntity.getInTimeFormat(),
-        });
+        setRaceTime(displayTimeEntity.getInTimeFormat());
     }
 
-    setStartDateTimeHandler() {
+    function setStartDateTimeHandler() {
         const startDateTime = new Date().toUTCString();
 
-        this.setAndPersistState({
-            startDateTime: startDateTime
-        }).then(() => {
-            this.setRaceTimeUpdateInterval();
+        mergeIntoRace({
+            startDateTime: startDateTime,
         });
+
+        setRaceTimeUpdateInterval();
     }
 
-    setEndDateTimeHandler() {
-        clearInterval(this.raceTimeUpdateInterval);
+    function setEndDateTimeHandler() {
+        const intervalId = raceTimeUpdateInterval.current;
+
+        clearInterval(intervalId);
 
         const now = new Date().toUTCString();
 
-        this.setAndPersistState({
+        mergeIntoRace({
             endDateTime: now,
-        }).then(() => {
-            this.setEndedRaceTime();
         });
+
+        setEndedRaceTime();
     }
 
-    onRemoveLapClickHandler(lap) {
-        const lapIsLast = this.state.laps.every(lapRow => lapRow.number <= lap.number);
+    function onRemoveLapClickHandler(lap) {
+        const lapIsLast = race.laps.every(lapRow => lapRow.number <= lap.number);
 
         if (! lapIsLast) {
             return;
@@ -306,20 +286,20 @@ class Race extends Component {
             return;
         }
 
-        const laps = this.state.laps.filter(lapRow => lapRow.id !== lap.id);
+        const updatedLaps = race.laps.filter(lapRow => lapRow.id !== lap.id);
 
-        const competitors = this.state.competitors.map(competitor => {
+        const updatedCompetitors = race.competitors.map(competitor => {
             const competitorLaps = competitor.laps.filter(competitorLap => {
                 return competitorLap.lapId !== lap.id
             });
 
             return {
                 ...competitor,
-                laps: competitorLaps
+                laps: competitorLaps,
             };
         });
 
-        const competitorSort = this.state.competitorSort;
+        const competitorSort = race.competitorSort;
 
         if (competitorSort.orderBy === 'lap' && lap.id === competitorSort.orderByLap.id) {
             competitorSort.direction = 'asc';
@@ -327,23 +307,19 @@ class Race extends Component {
             competitorSort.orderByLap = null;
         }
 
-        const promise = this.setAndPersistState({
-            laps: laps,
-            competitors: competitors,
-            competitorSort: competitorSort
-        });
+        const updatedCompetitorsWithTotals = calculateCompetitorTimeTotal(updatedCompetitors);
 
-        promise.then(() => {
-            this.calculateCompetitorTimeTotal(competitors);
+        mergeIntoRace({
+            laps: updatedLaps,
+            competitors: updatedCompetitorsWithTotals,
+            competitorSort: competitorSort,
         });
     }
 
-    calculateCompetitorTimeTotal(competitorsToUpdate) {
-        const competitorsTotalTimes = [];
-
-        competitorsToUpdate.forEach((competitorToUpdate) => {
-            const timeTotal = competitorToUpdate.laps.reduce((accumulatedTimeInSeconds, lap) => {
-                if ('' !== lap.time) {
+    function calculateCompetitorTimeTotal(competitorsToUpdate) {
+        const updatedCompetitors = competitorsToUpdate.map(competitorRow => {
+            const timeTotalInSeconds = competitorRow.laps.reduce((accumulatedTimeInSeconds, lap) => {
+                if (lap.time !== '') {
                     const lapTimeInSeconds = DisplayTimeEntity
                         .fromDisplayFormat(lap.time)
                         .getTimeInSeconds();
@@ -354,81 +330,65 @@ class Race extends Component {
                 return accumulatedTimeInSeconds;
             }, 0);
 
-            competitorsTotalTimes[competitorToUpdate.id] = timeTotal;
+            return {
+                ...competitorRow,
+                timeTotal: DisplayTimeEntity.fromMilliseconds(timeTotalInSeconds * 1000).getInDisplayFormat(),
+            };
         });
 
-        const competitors = this.state.competitors.map(competitorRow => {
-            if (Object.keys(competitorsTotalTimes).includes(competitorRow.id)) {
-                const timeTotalInMilliseconds = competitorsTotalTimes[competitorRow.id] * 1000;
-
-                return {
-                    ...competitorRow,
-                    timeTotal: DisplayTimeEntity.fromMilliseconds(timeTotalInMilliseconds).getInDisplayFormat()
-                };
-            }
-
-            return competitorRow;
-        });
-
-        this.setAndPersistState({
-            competitors: competitors
-        });
+        return updatedCompetitors;
     }
 
-    onRemoveCompetitorClickHandler(competitor) {
+    function onRemoveCompetitorClickHandler(competitor) {
         if (! window.confirm('Are you sure you wish to delete this competitor? This will delete all laps times for this competitor. This cannot be undone.')) {
             return;
         }
 
-        const competitors = this.state.competitors.filter(competitorRow => {
+        const competitors = race.competitors.filter(competitorRow => {
             return competitorRow.id !== competitor.id
         });
 
-        this.setAndPersistState({
-            competitors: competitors
+        mergeIntoRace({
+            competitors: competitors,
         });
     }
 
-    render() {
-        return (
-            <div>
-                <h1 className="page-header">Race</h1>
+    return (
+        <div>
+            <h1 className="page-header">Race</h1>
 
-                <RaceTitle title={this.state.title} onRaceTitleChangeHandler={this.onRaceTitleChangeHandler.bind(this)} />
+            <RaceTitle title={race.title} onRaceTitleChangeHandler={onRaceTitleChangeHandler} />
 
-                <div className="my-4">
-                    <span className="inline-block bg-purple-700 px-2 text-white text-sm font-bold rounded-l leading-6 align-middle">Timer</span>
-                    <span className="inline-block bg-gray-200 px-2 rounded-r leading-6 align-middle min-w-24 text-center font-mono">{this.state.raceTime ? this.state.raceTime : '-'}</span>
-                    {this.state.endDateTime &&
-                        <span className="ml-3 text-purple-700">{String.fromCharCode('9873')} Race Finished</span>
-                    }
-                </div>
-
-                <div className="my-4">
-                    <button type="button" onClick={this.onAddCompetitorHandler.bind(this)} className="cta mr-3">+ Add Competitor</button>
-                    <button type="button" onClick={this.onAddLapHandler.bind(this)}  className="cta">+ Add Lap</button>
-                </div>
-
-                <RaceTable
-                    competitors={this.state.competitors}
-                    startDateTime={this.state.startDateTime}
-                    laps={this.state.laps}
-                    competitorSort={this.state.competitorSort}
-                    onCompetitorChangeHandler={this.onCompetitorChangeHandler.bind(this)}
-                    onSortButtonClickHandler={this.onSortButtonClickHandler.bind(this)}
-                    onCompetitorLapChange={this.onCompetitorLapChange.bind(this)}
-                    onCompetitorLapSet={this.onCompetitorLapSet.bind(this)}
-                    onRemoveLapClickHandler={this.onRemoveLapClickHandler.bind(this)}
-                    onRemoveCompetitorClickHandler={this.onRemoveCompetitorClickHandler.bind(this)}
-                />
-
-                <div className="my-4">
-                    <RaceStart startDateTime={this.state.startDateTime} setStartDateTimeHandler={this.setStartDateTimeHandler.bind(this)} />
-                    <RaceEnd startDateTime={this.state.startDateTime} endDateTime={this.state.endDateTime} setEndDateTimeHandler={this.setEndDateTimeHandler.bind(this)} />
-                </div>
+            <div className="my-4">
+                <span className="inline-block bg-purple-700 px-2 text-white text-sm font-bold rounded-l leading-6 align-middle">Timer</span>
+                <span className="inline-block bg-gray-200 px-2 rounded-r leading-6 align-middle min-w-24 text-center font-mono">{raceTime ? raceTime : '-'}</span>
+                {race.endDateTime &&
+                    <span className="ml-3 text-purple-700">{String.fromCharCode('9873')} Race Finished</span>
+                }
             </div>
-        );
-    }
-}
 
-export default Race;
+            <div className="my-4">
+                <button type="button" onClick={onAddCompetitorHandler} className="cta mr-3">+ Add Competitor</button>
+                <button type="button" onClick={onAddLapHandler}  className="cta">+ Add Lap</button>
+            </div>
+
+            <RaceTable
+                competitors={race.competitors}
+                startDateTime={race.startDateTime}
+                laps={race.laps}
+                competitorSort={race.competitorSort}
+                onCompetitorChangeHandler={onCompetitorChangeHandler}
+                onSortButtonClickHandler={onSortButtonClickHandler}
+                onCompetitorLapChange={onCompetitorLapChange}
+                onCompetitorLapSet={onCompetitorLapSet}
+                onRemoveLapClickHandler={onRemoveLapClickHandler}
+                onRemoveCompetitorClickHandler={onRemoveCompetitorClickHandler}
+            />
+
+            <div className="my-4">
+                <RaceStart startDateTime={race.startDateTime} setStartDateTimeHandler={setStartDateTimeHandler} />
+                <RaceEnd startDateTime={race.startDateTime} endDateTime={race.endDateTime} setEndDateTimeHandler={setEndDateTimeHandler} />
+            </div>
+        </div>
+    );
+}

@@ -11,7 +11,7 @@ export default function Main() {
                 <Route path="/" element={<RaceList />} />
                 <Route path="race-list" element={<RaceList />} />
                 <Route path="about" element={<About />} />
-                <Route path="race/:id" element={<Race />} />
+                <Route path="race/:raceId" element={<Race />} />
                 <Route path="storage-policy" element={<StoragePolicy />} />
             </Routes>
         </div>
