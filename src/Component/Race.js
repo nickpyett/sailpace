@@ -386,7 +386,7 @@ export default function Race() {
             />
 
             <div className="my-4">
-                <RaceStart startDateTime={race.startDateTime} setStartDateTimeHandler={setStartDateTimeHandler} />
+                <RaceStart startDateTime={race.startDateTime} endDateTime={race.endDateTime} setStartDateTimeHandler={setStartDateTimeHandler} />
                 <RaceEnd startDateTime={race.startDateTime} endDateTime={race.endDateTime} setEndDateTimeHandler={setEndDateTimeHandler} />
             </div>
         </div>
