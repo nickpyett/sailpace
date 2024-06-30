@@ -1,4 +1,5 @@
-import { HashRouter, Link } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
+import Footer from 'Component/Footer';
 import Header from 'Component/Header';
 import Main from 'Component/Main';
 
@@ -7,7 +8,7 @@ export default function App() {
         <HashRouter>
             <Header />
             <Main />
-            <div className="mx-4 py-4 border-t border-sky-600 text-sm">&copy; Nick Pyett 2024 | <Link to="/storage-policy" className="text-sky-800 hover:text-sky-700 underline">Storage Policy</Link></div>
+            <Footer />
         </HashRouter>
     );
 }
