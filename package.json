@@ -13,7 +13,7 @@
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "start": "react-scripts start && npm run start:css",
+    "start": "react-scripts start & npm run start:css",
     "start:css": "tailwind -i ./src/index.src.css -o ./src/index.css --watch",
     "build": "react-scripts build && npm run build:css",
     "build:css": "tailwind -i ./src/index.src.css -o ./src/index.css",
