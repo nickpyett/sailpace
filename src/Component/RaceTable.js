@@ -13,10 +13,6 @@ export default function RaceTable({
     onRemoveLapClickHandler,
     onRemoveCompetitorClickHandler
 }) {
-    function handleSortButtonClick(e) {
-        onSortButtonClickHandler(e.target.name);
-    }
-
     const { orderBy, orderByLap, direction } = competitorSort;
 
     if (['ordinal', 'name', 'class', 'number', 'lap', 'timeTotal'].includes(orderBy)) {
@@ -73,15 +69,15 @@ export default function RaceTable({
             <table className="table-fixed w-max">
                 <thead>
                     <tr className="border-b border-sky-600">
-                        <th className="p-2 w-16"># <button type="button" name="ordinal" onClick={handleSortButtonClick} title="Sort">&#x25B2;&#x25BC;</button></th>
-                        <th className="p-2 w-36">Name <button type="button" name="name" onClick={handleSortButtonClick} title="Sort">&#x25B2;&#x25BC;</button></th>
-                        <th className="p-2 w-36">Number <button type="button" name="number" onClick={handleSortButtonClick} title="Sort">&#x25B2;&#x25BC;</button></th>
-                        <th className="p-2 w-36">Class <button type="button" name="class" onClick={handleSortButtonClick} title="Sort">&#x25B2;&#x25BC;</button></th>
+                        <th className="p-2 w-16"># <button type="button" name="ordinal" onClick={(e) => onSortButtonClickHandler(e.target.name)} title="Sort">&#x25B2;&#x25BC;</button></th>
+                        <th className="p-2 w-36">Name <button type="button" name="name" onClick={(e) => onSortButtonClickHandler(e.target.name)} title="Sort">&#x25B2;&#x25BC;</button></th>
+                        <th className="p-2 w-36">Number <button type="button" name="number" onClick={(e) => onSortButtonClickHandler(e.target.name)} title="Sort">&#x25B2;&#x25BC;</button></th>
+                        <th className="p-2 w-36">Class <button type="button" name="class" onClick={(e) => onSortButtonClickHandler(e.target.name)} title="Sort">&#x25B2;&#x25BC;</button></th>
                         {raceTableHeaders}
                         <th className="p-2 w-36">
                             Total
                             &nbsp;
-                            <button type="button" name="timeTotal" onClick={handleSortButtonClick} title="Sort">&#x25B2;&#x25BC;</button>
+                            <button type="button" name="timeTotal" onClick={(e) => onSortButtonClickHandler(e.target.name)} title="Sort">&#x25B2;&#x25BC;</button>
                         </th>
                         <th className="p-2 w-36">Finished</th>
                     </tr>
