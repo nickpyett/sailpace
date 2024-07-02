@@ -1,4 +1,4 @@
-import DisplayTimeEntity from 'entity/DisplayTimeEntity';
+import DisplayTimeEntity from 'Entity/DisplayTimeEntity';
 
 test('construct and get time in seconds and display', () => {
     const dateTimeEntity = new DisplayTimeEntity(1, 2, 3, 4);
