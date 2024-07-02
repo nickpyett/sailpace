@@ -184,26 +184,24 @@ export default function Race() {
             return lapRow;
         });
 
-        let updatedCompetitor = competitor;
+        const updatedCompetitor = {
+            ...competitor,
+            laps: updatedLaps,
+        };
+
+        const [updatedCompetitorWithTimeTotal] = calculateCompetitorTimeTotal([updatedCompetitor]);
 
         const updatedCompetitors = race.competitors.map(competitorRow => {
             if (competitorRow.id === competitor.id) {
-                updatedCompetitor = {
-                    ...competitorRow,
-                    laps: updatedLaps,
-                };
-
-                return updatedCompetitor;
+                return updatedCompetitorWithTimeTotal;
             }
 
             return competitorRow;
         });
 
-        const updatedCompetitorsWithTotals = calculateCompetitorTimeTotal(updatedCompetitors);
-
         mergeIntoRace({
-            competitors: updatedCompetitorsWithTotals,
-        })
+            competitors: updatedCompetitors,
+        });
     }
 
     function onCompetitorLapSet(competitor, competitorLap) {
@@ -307,7 +305,6 @@ export default function Race() {
             competitorSort.orderByLap = null;
         }
 
-        // TODO Only pass competitor with lap changed here
         const updatedCompetitorsWithTotals = calculateCompetitorTimeTotal(updatedCompetitors);
 
         mergeIntoRace({
