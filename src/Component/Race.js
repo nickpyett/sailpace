@@ -307,6 +307,7 @@ export default function Race() {
             competitorSort.orderByLap = null;
         }
 
+        // TODO Only pass competitor with lap changed here
         const updatedCompetitorsWithTotals = calculateCompetitorTimeTotal(updatedCompetitors);
 
         mergeIntoRace({
