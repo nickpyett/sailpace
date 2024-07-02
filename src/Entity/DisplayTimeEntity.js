@@ -1,4 +1,4 @@
-class DisplayTimeEntity {
+export default class DisplayTimeEntity {
     constructor(hours, minutes, seconds, milliseconds) {
         this.hours = this.parseIntOrZero(hours);
         this.minutes = this.parseIntOrZero(minutes);
@@ -73,5 +73,3 @@ class DisplayTimeEntity {
         return parseInt(string, 10) || 0;
     }
 }
-
-export default DisplayTimeEntity;
