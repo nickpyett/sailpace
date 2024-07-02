@@ -8,7 +8,7 @@ test('construct and get time in seconds and display', () => {
     expect(dateTimeEntity.seconds).toBe(3);
     expect(dateTimeEntity.milliseconds).toBe(4);
 
-    expect(dateTimeEntity.getTimeInSeconds()).toBe(3723.004);
+    expect(dateTimeEntity.getTimeInMilliseconds()).toBe(3723004);
     expect(dateTimeEntity.getInDisplayFormat()).toBe('01:02:03.004');
 });
 
@@ -20,7 +20,7 @@ test('create using fromDisplayFormat and get time in seconds and display', () =>
     expect(dateTimeEntity1.seconds).toBe(3);
     expect(dateTimeEntity1.milliseconds).toBe(4);
 
-    expect(dateTimeEntity1.getTimeInSeconds()).toBe(3723.004);
+    expect(dateTimeEntity1.getTimeInMilliseconds()).toBe(3723004);
     expect(dateTimeEntity1.getInDisplayFormat()).toBe('01:02:03.004');
 
     const dateTimeEntity2 = DisplayTimeEntity.fromDisplayFormat('01:02:03.400');
@@ -30,7 +30,7 @@ test('create using fromDisplayFormat and get time in seconds and display', () =>
     expect(dateTimeEntity2.seconds).toBe(3);
     expect(dateTimeEntity2.milliseconds).toBe(400);
 
-    expect(dateTimeEntity2.getTimeInSeconds()).toBe(3723.4);
+    expect(dateTimeEntity2.getTimeInMilliseconds()).toBe(3723400);
     expect(dateTimeEntity2.getInDisplayFormat()).toBe('01:02:03.400');
 });
 
@@ -42,7 +42,7 @@ test('create using fromMilliseconds and get time in seconds and display', () => 
     expect(dateTimeEntity1.seconds).toBe(3);
     expect(dateTimeEntity1.milliseconds).toBe(4);
 
-    expect(dateTimeEntity1.getTimeInSeconds()).toBe(3723.004);
+    expect(dateTimeEntity1.getTimeInMilliseconds()).toBe(3723004);
     expect(dateTimeEntity1.getInDisplayFormat()).toBe('01:02:03.004');
 
     const dateTimeEntity2 = DisplayTimeEntity.fromMilliseconds(3723400);
@@ -53,6 +53,6 @@ test('create using fromMilliseconds and get time in seconds and display', () => 
     expect(dateTimeEntity2.milliseconds).toBe(400);
 
     expect(dateTimeEntity2.getInDisplayFormat()).toBe('01:02:03.400');
-    expect(dateTimeEntity2.getTimeInSeconds()).toBe(3723.400);
+    expect(dateTimeEntity2.getTimeInMilliseconds()).toBe(3723400);
 
 });

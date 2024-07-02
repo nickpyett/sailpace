@@ -319,21 +319,21 @@ export default function Race() {
 
     function calculateCompetitorTimeTotal(competitorsToUpdate) {
         const updatedCompetitors = competitorsToUpdate.map(competitorRow => {
-            const timeTotalInSeconds = competitorRow.laps.reduce((accumulatedTimeInSeconds, lap) => {
+            const timeTotalInMilliseconds = competitorRow.laps.reduce((accumulatedTimeInMilliseconds, lap) => {
                 if (lap.time !== '') {
-                    const lapTimeInSeconds = DisplayTimeEntity
+                    const lapTimeInMilliseconds = DisplayTimeEntity
                         .fromDisplayFormat(lap.time)
-                        .getTimeInSeconds();
+                        .getTimeInMilliseconds();
 
-                    return accumulatedTimeInSeconds + lapTimeInSeconds;
+                    return accumulatedTimeInMilliseconds + lapTimeInMilliseconds;
                 }
 
-                return accumulatedTimeInSeconds;
+                return accumulatedTimeInMilliseconds;
             }, 0);
 
             return {
                 ...competitorRow,
-                timeTotal: DisplayTimeEntity.fromMilliseconds(timeTotalInSeconds * 1000).getInDisplayFormat(),
+                timeTotal: DisplayTimeEntity.fromMilliseconds(timeTotalInMilliseconds).getInDisplayFormat(),
             };
         });
 

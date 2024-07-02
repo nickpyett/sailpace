@@ -6,18 +6,11 @@ export default class DisplayTimeEntity {
         this.milliseconds = this.parseIntOrZero(milliseconds);
     }
 
-    getTimeInSeconds() {
-        // Milliseconds is passed as an integer (so the time 01:02:03.456 will have
-        // milliseconds as 456), not a decimal, so convert it to a decimal
-        const timeMillisecondsInSeconds = parseFloat(
-            '0.' + this.prependIntWithZeroes(this.milliseconds, 3),
-            10
-        ) || 0;
-
-        return (this.hours * 3600)
-            + (this.minutes * 60)
-            + this.seconds
-            + timeMillisecondsInSeconds;
+    getTimeInMilliseconds() {
+        return (this.hours * 3600 * 1000)
+            + (this.minutes * 60 * 1000)
+            + (this.seconds * 1000)
+            + this.milliseconds;
     }
 
     getInDisplayFormat() {
@@ -35,9 +28,8 @@ export default class DisplayTimeEntity {
 
     static fromDisplayFormat(displayFormat) {
         const timeAndMilliseconds = displayFormat.split('.');
-        const hoursMinutesSeconds = timeAndMilliseconds[0].split(':');
 
-        const [hours, minutes, seconds] = hoursMinutesSeconds;
+        const [hours, minutes, seconds] = timeAndMilliseconds[0].split(':');
         const milliseconds = timeAndMilliseconds[1];
 
         return new this(hours, minutes, seconds, milliseconds);
