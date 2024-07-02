@@ -1,6 +1,6 @@
 import DisplayTimeEntity from 'Entity/DisplayTimeEntity';
 
-test('construct and get time in seconds and display', () => {
+test('construct and get time in milliseconds and display', () => {
     const dateTimeEntity = new DisplayTimeEntity(1, 2, 3, 4);
 
     expect(dateTimeEntity.hours).toBe(1);
@@ -12,7 +12,7 @@ test('construct and get time in seconds and display', () => {
     expect(dateTimeEntity.getInDisplayFormat()).toBe('01:02:03.004');
 });
 
-test('create using fromDisplayFormat and get time in seconds and display', () => {
+test('create using fromDisplayFormat and get time in milliseconds and display', () => {
     const dateTimeEntity1 = DisplayTimeEntity.fromDisplayFormat('01:02:03.004');
 
     expect(dateTimeEntity1.hours).toBe(1);
@@ -34,7 +34,7 @@ test('create using fromDisplayFormat and get time in seconds and display', () =>
     expect(dateTimeEntity2.getInDisplayFormat()).toBe('01:02:03.400');
 });
 
-test('create using fromMilliseconds and get time in seconds and display', () => {
+test('create using fromMilliseconds and get time in milliseconds and display', () => {
     const dateTimeEntity1 = DisplayTimeEntity.fromMilliseconds(3723004);
 
     expect(dateTimeEntity1.hours).toBe(1);
