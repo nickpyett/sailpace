@@ -7,8 +7,8 @@ import DisplayTimeEntity from 'Entity/DisplayTimeEntity';
 import RaceEnd from 'Component/RaceEnd';
 import RaceEntity from 'Entity/RaceEntity';
 import RaceLapEntity from 'Entity/RaceLapEntity';
-import RaceTable from 'Component/RaceTable';
 import RaceStart from 'Component/RaceStart';
+import RaceTable from 'Component/RaceTable';
 import RaceTitle from 'Component/RaceTitle';
 
 export default function Race() {
