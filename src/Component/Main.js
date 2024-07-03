@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import About from 'Component/About';
-import RaceList from 'Component/RaceList';
 import Race from 'Component/Race';
+import RaceList from 'Component/RaceList';
 import StoragePolicy from 'Component/StoragePolicy';
 
 export default function Main() {

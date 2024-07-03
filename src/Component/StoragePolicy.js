@@ -22,5 +22,5 @@ export default function StoragePolicy() {
                 </tbody>
             </table>
         </div>
-    )
+    );
 }
